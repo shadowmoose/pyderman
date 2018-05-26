@@ -21,6 +21,6 @@ setup(
 	packages=['chromedriver_install'],
 	install_requires=readme('requirements.txt', split=True),
 	entry_points={
-		'console_scripts': ['install-chromedriver=chromedriver_install:install'],
+		'console_scripts': ['install-chromedriver=chromedriver_install.main:run'],
 	},
 	zip_safe=False)

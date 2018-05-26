@@ -25,10 +25,13 @@ for o in os_opts:
 		os_filename = o[2]
 
 
-def install(file_directory='./lib/', verbose=True, chmod=True, overwrite=False):
+def install(file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None):
 	if not current_os or not os_version:
 		raise Exception('Cannot determine OS/bitness version! [%s,%s]' % (current_os, os_version))
-	latest = requests.get(_base_version).text
+	if not version:
+		latest = requests.get(_base_version).text
+	else:
+		latest = version
 	download = _base_download % (latest, current_os, os_version)
 	path = os.path.join(os.path.abspath(file_directory), 'chromedriver_%s.zip' % latest)
 	out_filename = os.path.join(os.path.abspath(file_directory), os_filename)
