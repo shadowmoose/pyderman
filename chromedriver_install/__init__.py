@@ -76,10 +76,3 @@ def _extract(path):
 		zip_ref.extractall(os.path.dirname(path))
 	os.remove(path)
 	return True
-
-
-if __name__ == "__main__":
-	path = install(verbose=True, chmod=True)
-	if not os.path.exists(path):
-		raise FileNotFoundError('The chromedriver executable was not properly downloaded.')
-	print('Chromedriver is installed at: "%s"' % path)
