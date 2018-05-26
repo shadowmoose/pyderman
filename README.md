@@ -1,6 +1,6 @@
 # Chromedriver installer
 
-This is a super-simple package that can automatically find & download the newest (or whichever you speficy) version of 
+This is a super-simple package that can automatically find & download the newest (or whichever you specify) version of 
 the chromedriver executable.
 
 It should work on Windows/Linx/Mac, and also supports os-specific permissions.

@@ -11,7 +11,7 @@ def readme(file='', split=False):
 
 setup(
 	name='chromedriver_install',
-	version='0.1',
+	version='0.2',
 	description='Package for installing the latest chromedriver automatically.',
 	long_description=readme('README.md'),
 	url='http://github.com/shadowmoose/chrome_driver',
@@ -24,3 +24,5 @@ setup(
 		'console_scripts': ['install-chromedriver=chromedriver_install.main:run'],
 	},
 	zip_safe=False)
+
+# python setup.py sdist;twine upload dist/*
