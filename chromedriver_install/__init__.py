@@ -80,5 +80,6 @@ def _extract(path):
 
 if __name__ == "__main__":
 	path = install(verbose=True, chmod=True)
-	assert os.path.exists(path)
+	if not os.path.exists(path):
+		raise FileNotFoundError('The chromedriver executable was not properly downloaded.')
 	print('Chromedriver is installed at: "%s"' % path)
