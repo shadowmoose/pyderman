@@ -7,6 +7,8 @@ install:
 - pip install .
 script:
 - python chromedriver_install/main.py
+after_script:
+- ls -la
 notifications:
   email:
     on_success: never
