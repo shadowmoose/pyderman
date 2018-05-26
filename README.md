@@ -13,7 +13,7 @@ pip install chromedriver-install
 
 Then call it in your code like so:
 ```python
-import from chromedriver_install
+import chromedriver_install
 path = chromedriver_install.install(file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None)
 print('Installed chromedriver to path: %s' % path)
 ```
