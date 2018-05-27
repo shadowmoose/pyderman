@@ -1,4 +1,4 @@
-# Chromedriver installer
+# Chromedriver installer  [![Build Status](https://travis-ci.com/shadowmoose/chrome_driver.svg?branch=master)](https://travis-ci.com/shadowmoose/chrome_driver)
 
 This is a super-simple package that can automatically find & download the newest (or whichever you specify) version of 
 the chromedriver executable.
