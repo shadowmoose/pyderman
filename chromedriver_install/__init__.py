@@ -13,28 +13,28 @@ _os_opts = [('win', 'win', 'chromedriver.exe'), ('darwin', 'mac', 'chromedriver'
 
 _os_version = None
 _os_filename = None
-for v in _versions:
-	if platform.machine().endswith(v):
-		_os_version = v
+for _v in _versions:
+	if platform.machine().endswith(_v):
+		_os_version = _v
 		break
 
-current_os = None
-for o in _os_opts:
-	if o[0] in platform.system().lower():
-		current_os = o[1]
-		_os_filename = o[2]
+_current_os = None
+for _o in _os_opts:
+	if _o[0] in platform.system().lower():
+		_current_os = _o[1]
+		_os_filename = _o[2]
 
 
 def install(file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, filename=None):
-	if not current_os or not _os_version:
-		raise Exception('Cannot determine OS/bitness version! [%s,%s]' % (current_os, _os_version))
+	if not _current_os or not _os_version:
+		raise Exception('Cannot determine OS/bitness version! [%s,%s]' % (_current_os, _os_version))
 	if not version:
 		latest = requests.get(_base_version).text
 	else:
 		latest = version
 	if not filename:
 		filename = _os_filename
-	download = _base_download % (latest, current_os, _os_version)
+	download = _base_download % (latest, _current_os, _os_version)
 	path = os.path.join(os.path.abspath(file_directory), 'chromedriver_%s.zip' % latest)
 	out_filename = os.path.join(os.path.abspath(file_directory), filename)
 	if not overwrite and os.path.exists(out_filename):
@@ -46,7 +46,7 @@ def install(file_directory='./lib/', verbose=True, chmod=True, overwrite=False, 
 		if verbose:
 			print('Download for %s version failed; Trying alternates.' % _os_version)
 		for _v in _versions:
-			download = _base_download % (latest, current_os, _v)
+			download = _base_download % (latest, _current_os, _v)
 			if _v != _os_version and _download(download, path, verbose):
 				break
 	out = out_filename if _extract(path) else None
