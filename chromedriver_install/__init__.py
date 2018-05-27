@@ -8,33 +8,35 @@ import zipfile
 _base_version = 'https://chromedriver.storage.googleapis.com/LATEST_RELEASE'
 _base_download = 'https://chromedriver.storage.googleapis.com/%s/chromedriver_%s%s.zip'
 
-versions = ['32', '64']
-os_opts = [('win', 'win', 'chromedriver.exe'), ('darwin', 'mac', 'chromedriver'), ('linux', 'linux', 'chromedriver')]
+_versions = ['32', '64']
+_os_opts = [('win', 'win', 'chromedriver.exe'), ('darwin', 'mac', 'chromedriver'), ('linux', 'linux', 'chromedriver')]
 
-os_version = None
-os_filename = None
-for v in versions:
+_os_version = None
+_os_filename = None
+for v in _versions:
 	if platform.machine().endswith(v):
-		os_version = v
+		_os_version = v
 		break
 
 current_os = None
-for o in os_opts:
+for o in _os_opts:
 	if o[0] in platform.system().lower():
 		current_os = o[1]
-		os_filename = o[2]
+		_os_filename = o[2]
 
 
-def install(file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None):
-	if not current_os or not os_version:
-		raise Exception('Cannot determine OS/bitness version! [%s,%s]' % (current_os, os_version))
+def install(file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, filename=None):
+	if not current_os or not _os_version:
+		raise Exception('Cannot determine OS/bitness version! [%s,%s]' % (current_os, _os_version))
 	if not version:
 		latest = requests.get(_base_version).text
 	else:
 		latest = version
-	download = _base_download % (latest, current_os, os_version)
+	if not filename:
+		filename = _os_filename
+	download = _base_download % (latest, current_os, _os_version)
 	path = os.path.join(os.path.abspath(file_directory), 'chromedriver_%s.zip' % latest)
-	out_filename = os.path.join(os.path.abspath(file_directory), os_filename)
+	out_filename = os.path.join(os.path.abspath(file_directory), filename)
 	if not overwrite and os.path.exists(out_filename):
 		if verbose:
 			print('chromedriver is already installed.')
@@ -42,10 +44,10 @@ def install(file_directory='./lib/', verbose=True, chmod=True, overwrite=False, 
 
 	if not _download(download, path, verbose):
 		if verbose:
-			print('Download for %s version failed; Trying alternates.' % os_version)
-		for _v in versions:
+			print('Download for %s version failed; Trying alternates.' % _os_version)
+		for _v in _versions:
 			download = _base_download % (latest, current_os, _v)
-			if _v != os_version and _download(download, path, verbose):
+			if _v != _os_version and _download(download, path, verbose):
 				break
 	out = out_filename if _extract(path) else None
 	if out and chmod:
@@ -60,16 +62,15 @@ def _download(url, path, verbose=True):
 		print('\tDownloading from: ', url)
 		print('\tTo: ', path)
 	r = requests.get(url, stream=True)
-	if r.status_code == 404:
+	if r.status_code != 200:
 		return False
-	if r.status_code == 200:
+	else:
 		if not os.path.isdir(os.path.dirname(path)):
 			os.makedirs(os.path.dirname(path), exist_ok=True)
 		with open(path, 'wb') as f:
 			r.raw.decode_content = True
 			shutil.copyfileobj(r.raw, f)
 			return True
-	return True
 
 
 def _extract(path):
