@@ -33,7 +33,9 @@ def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, ove
 			continue
 		driver, url, ver = data
 
-		archive_path = join(abspath(file_directory), '%s_%s.zip' % (driver, ver))
+		archive = '.zip' if url.endswith('.zip') else '.tar.gz'
+
+		archive_path = join(abspath(file_directory), '%s_%s.%s' % (driver, ver, archive))
 		file_path = join(abspath(file_directory), '%s_%s%s' % (driver, ver, _ext))
 		if file_name:
 			file_path = join(abspath(file_directory), file_name)
