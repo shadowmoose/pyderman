@@ -19,7 +19,7 @@ for _o in _os_opts:
 		_ext = _o[2]
 
 
-def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, file_name=None, return_data=False):
+def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, filename=None, return_info=False):
 	if not _current_os:
 		raise Exception('Cannot determine OS version! [%s]' % platform.system())
 	if not version:
@@ -37,8 +37,8 @@ def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, ove
 
 		archive_path = join(abspath(file_directory), '%s_%s.%s' % (driver, ver, archive))
 		file_path = join(abspath(file_directory), '%s_%s%s' % (driver, ver, _ext))
-		if file_name:
-			file_path = join(abspath(file_directory), file_name)
+		if filename:
+			file_path = join(abspath(file_directory), filename)
 
 		if not overwrite and isfile(file_path):
 			if verbose:
@@ -56,7 +56,7 @@ def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, ove
 			mode |= (mode & 0o444) >> 2    # copy R bits to X
 			os.chmod(out, mode)
 
-		if return_data:
+		if return_info:
 			return {
 				'path': out,
 				'version': ver,

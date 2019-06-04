@@ -6,7 +6,7 @@ import subprocess
 def run():
 	for driver in [chrome, firefox]:
 		print("Testing %s..." % driver.__name__)
-		data = install(browser=driver, verbose=True, chmod=True, overwrite=True, return_data=True)
+		data = install(browser=driver, verbose=True, chmod=True, overwrite=True, return_info=True)
 		path = data['path']
 		if not os.path.exists(path):
 			raise FileNotFoundError('The %s executable was not properly downloaded.' % driver.__name__)
