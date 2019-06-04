@@ -11,7 +11,7 @@ def readme(file='', split=False):
 
 setup(
 	name='chromedriver_install',
-	version='0.3',
+	version='1.0.0',
 	description='Package for installing the latest chromedriver automatically.',
 	long_description=readme('README.md'),
 	long_description_content_type='text/markdown',
