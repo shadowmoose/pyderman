@@ -19,7 +19,7 @@ for _o in _os_opts:
 		_ext = _o[2]
 
 
-def download(browser=None, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, file_name=None, return_data=False):
+def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, file_name=None, return_data=False):
 	if not _current_os:
 		raise Exception('Cannot determine OS version! [%s]' % platform.system())
 	if not version:
