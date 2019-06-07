@@ -1,6 +1,6 @@
 # Pyderman (Selenium Web Driver Installer)  [![Build Status](https://travis-ci.com/shadowmoose/pyderman.svg?branch=master)](https://travis-ci.com/shadowmoose/pyderman)
 
-This is a super-simple package that can automatically find & download the newest (or whichever you specify) version of 
+This is a fast, easy, dependency-free package that can automatically find & download the newest (or whichever you specify) version of 
 the Google Chrome (chromedriver) or Firefox (geckodriver) web drivers.
 
 This project was built to allow developers to seamlessly include selenium support on the user-side, without requiring any manual configuration on their part.
