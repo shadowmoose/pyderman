@@ -6,7 +6,7 @@ python:
 install:
 - pip install .
 script:
-- python chromedriver_install/test.py
+- python pyderman/test.py
 after_script:
 - ls -la
 - ls -la ./lib/
