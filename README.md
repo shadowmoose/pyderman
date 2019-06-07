@@ -1,32 +1,39 @@
-# Selenium Web Driver Installer  [![Build Status](https://travis-ci.com/shadowmoose/chrome_driver.svg?branch=master)](https://travis-ci.com/shadowmoose/chrome_driver)
+# Pyderman (Selenium Web Driver Installer)  [![Build Status](https://travis-ci.com/shadowmoose/pyderman.svg?branch=master)](https://travis-ci.com/shadowmoose/pyderman)
 
 This is a super-simple package that can automatically find & download the newest (or whichever you specify) version of 
 the Google Chrome (chromedriver) or Firefox (geckodriver) web drivers.
 
 This project was built to allow developers to seamlessly include selenium support on the user-side, without requiring any manual configuration on their part.
 
-It is tested on Windows/Linx/Mac, and supports os-specific permissions.
+It is tested on Windows/Linux/Mac, and supports os-specific permissions.
 
 To install the library, run:
 ```
-pip install chromedriver-install
+pip install pyderman
 ```
 
 
 Then call it in your code like so:
+
 ```python
-import chromedriver_install as cdi
-path = cdi.install(browser=cdi.chrome, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, filename=None, return_info=False)
-print('Installed chromedriver to path: %s' % path)
+import pyderman as driver
+path = driver.install(browser=driver.firefox)
+print('Installed geckodriver driver to path: %s' % path)
 ```
+
 
 There are options for the output directory, disabling printout, running chmod on the downloaded executable, 
 automatic overwriting, executable file name, and version number. 
-All parameters are optional, and the default values are listed above.
+All parameters are optional, and the default values are listed below.
 
-To download Firefox, simply change the `browser` parameter:
+This example downloads the Chrome Driver instead, by changing ```browser``` like so:
 ```python
-import chromedriver_install as cdi
-path = cdi.install(browser=cdi.firefox)
-print('Installed geckodriver driver to path: %s' % path)
+import pyderman as dr
+path = dr.install(browser=dr.chrome, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, filename=None, return_info=False)
+print('Installed chromedriver to path: %s' % path)
 ```
+
+The download is very fast, and will skip downloading if the file already exists. This behavior can be toggled with ```overwrite```.
+
+## Why's it called 'Pyderman'?
+Because it installs *web*-drivers. Get it?

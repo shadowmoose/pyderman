@@ -1,11 +1,9 @@
-import requests
 import platform
-import shutil
 import os
-from os.path import join, dirname, isfile, abspath, isdir, basename
+from os.path import join, dirname, isfile, abspath, basename
 import zipfile
 import tarfile
-from chromedriver_install import chrome, firefox
+from pyderman import chrome, firefox, downloader
 
 
 _versions = sorted(['32', '64'], key=lambda _v: not platform.machine().endswith(_v))
@@ -19,7 +17,20 @@ for _o in _os_opts:
 		_ext = _o[2]
 
 
-def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, filename=None, return_info=False):
+def install(browser=chrome, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version='latest', filename=None, return_info=False):
+	"""
+	Downloads the given browser driver, and returns the path it was saved to.
+
+	:param browser: The Driver to download. Pass as `pyderman.chrome/firefox`. Default Chrome.
+	:param file_directory: The directory to save the driver.
+	:param verbose: If printouts are okay during downloading.
+	:param chmod: If True, attempt to make the downloaded driver executable.
+	:param overwrite: If true, overwrite existing drivers of the same version.
+	:param version: The version to download. Default 'latest'.
+	:param filename: The filename to save the driver to. Defaults to driver-specific.
+	:param return_info: If True, return an Object with more download information.
+	:return: The absolute path of the downloaded driver, or None if something failed.
+	"""
 	if not _current_os:
 		raise Exception('Cannot determine OS version! [%s]' % platform.system())
 	if not version:
@@ -69,16 +80,7 @@ def _download(url, path, verbose=True):
 	if verbose:
 		print('\tDownloading from: ', url)
 		print('\tTo: ', path)
-	r = requests.get(url, stream=True)
-	if r.status_code != 200:
-		return False
-	else:
-		if not isdir(dirname(path)):
-			os.makedirs(dirname(path), exist_ok=True)
-		with open(path, 'wb') as f:
-			r.raw.decode_content = True
-			shutil.copyfileobj(r.raw, f)
-			return True
+	return downloader.binary(url, path)
 
 
 def _extract(path, driver, out_file):
@@ -112,7 +114,6 @@ def _extract(path, driver, out_file):
 	if ret:
 		if isfile(out_file):
 			os.remove(out_file)
-		print(ret, out_file)
 		os.rename(ret, out_file)
 		os.rmdir(tmp_path)
 		ret = out_file

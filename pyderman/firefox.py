@@ -1,4 +1,4 @@
-import requests
+from pyderman import downloader
 import re
 
 
@@ -6,10 +6,10 @@ def get_url(version='latest', _os=None, _os_bit=None):
 	if version != 'latest' and not version.startswith('v'):
 		version = 'v%s' % version
 	repo = 'https://github.com/mozilla/geckodriver/releases/%s' % version
-	html = requests.get(repo)
-	if html.status_code != 200:
+	html = downloader.raw(repo)
+	if not html:
 		raise Exception("Unable to download version: %s" % version)
-	urls = ['https://github.com%s' % u for u in re.findall(r'\"(.+?/download.+?)\"', html.text)]
+	urls = ['https://github.com%s' % u for u in re.findall(r'\"(.+?/download.+?)\"', html)]
 	for u in urls:
 		if '%s%s' % (_os, _os_bit) in u:
 			ver = re.search(r'v(\d{1,2}\.\d{1,2}\.\d{1,2})', u).group(1)

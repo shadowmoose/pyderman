@@ -10,16 +10,16 @@ def readme(file='', split=False):
 
 
 setup(
-	name='chromedriver_install',
-	version='1.0.0',
-	description='Package for installing the latest chromedriver automatically.',
+	name='pyderman',
+	version='1.0.1',
+	description='Package for installing the latest chromedriver/geckodriver automatically.',
 	long_description=readme('README.md'),
 	long_description_content_type='text/markdown',
-	url='http://github.com/shadowmoose/chrome_driver',
+	url='http://github.com/shadowmoose/pyderman',
 	author='ShadowMoose',
 	author_email='shadowmoose@github.com',
 	license='MIT',
-	packages=['chromedriver_install'],
+	packages=['pyderman'],
 	install_requires=readme('requirements.txt', split=True),
 	zip_safe=False)
 

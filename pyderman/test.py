@@ -1,5 +1,5 @@
 import os
-from chromedriver_install import install, chrome, firefox
+from pyderman import install, chrome, firefox
 import subprocess
 
 
