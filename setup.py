@@ -12,7 +12,7 @@ def readme(file='', split=False):
 setup(
 	name='pyderman',
 	version='1.0.1',
-	description='Package for installing the latest chromedriver/geckodriver automatically.',
+	description='Installs the latest Chrome/Firefox/Gecko web drivers automatically.',
 	long_description=readme('README.md'),
 	long_description_content_type='text/markdown',
 	url='http://github.com/shadowmoose/pyderman',
