@@ -20,7 +20,7 @@ setup(
 	author_email='shadowmoose@github.com',
 	license='MIT',
 	packages=['pyderman'],
-	install_requires=readme('requirements.txt', split=True),
+	install_requires=[],
 	zip_safe=False)
 
 # python setup.py sdist;twine upload dist/*
