@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def readme(file='', split=False):
@@ -19,7 +19,7 @@ setup(
 	author='ShadowMoose',
 	author_email='shadowmoose@github.com',
 	license='MIT',
-	packages=['pyderman'],
+	packages=find_packages(),
 	install_requires=[],
 	zip_safe=False)
 
