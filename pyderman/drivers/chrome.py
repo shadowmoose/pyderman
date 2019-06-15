@@ -1,4 +1,4 @@
-from pyderman import downloader
+from pyderman.util import downloader
 
 _base_version = 'https://chromedriver.storage.googleapis.com/LATEST_RELEASE'
 _base_download = 'https://chromedriver.storage.googleapis.com/%s/chromedriver_%s%s.zip'

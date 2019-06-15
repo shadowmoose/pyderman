@@ -1,9 +1,13 @@
 import platform
 import os
+import re
 from os.path import join, dirname, isfile, abspath, basename
+import shutil
 import zipfile
 import tarfile
-from pyderman import chrome, firefox, downloader
+from pyderman import drivers
+from pyderman.util import downloader
+from pyderman.drivers import all_drivers, chrome, firefox, opera
 
 
 _versions = sorted(['32', '64'], key=lambda _v: not platform.machine().endswith(_v))
@@ -17,7 +21,7 @@ for _o in _os_opts:
 		_ext = _o[2]
 
 
-def install(browser=chrome, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version='latest', filename=None, return_info=False):
+def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version='latest', filename=None, return_info=False):
 	"""
 	Downloads the given browser driver, and returns the path it was saved to.
 
@@ -36,17 +40,17 @@ def install(browser=chrome, file_directory='./lib/', verbose=True, chmod=True, o
 	if not version:
 		version = 'latest'
 	if not browser:
-		browser = chrome
+		browser = drivers.chrome
 
 	for _os_bit in _versions:
 		data = browser.get_url(version=version, _os=_current_os, _os_bit=_os_bit)
 		if not data:
 			continue
-		driver, url, ver = data
-
+		driver_path, url, ver = data
+		driver = basename(driver_path)
 		archive = '.zip' if url.endswith('.zip') else '.tar.gz'
 
-		archive_path = join(abspath(file_directory), '%s_%s.%s' % (driver, ver, archive))
+		archive_path = join(abspath(file_directory), '%s_%s%s' % (driver, ver, archive))
 		file_path = join(abspath(file_directory), '%s_%s%s' % (driver, ver, _ext))
 		if filename:
 			file_path = join(abspath(file_directory), filename)
@@ -61,7 +65,7 @@ def install(browser=chrome, file_directory='./lib/', verbose=True, chmod=True, o
 				print('Download for %s version failed; Trying alternates.' % _os_bit)
 			continue
 
-		out = _extract(archive_path, driver, file_path)
+		out = _extract(archive_path, driver_path, file_path)
 		if out and chmod:
 			mode = os.stat(out).st_mode
 			mode |= (mode & 0o444) >> 2    # copy R bits to X
@@ -83,11 +87,11 @@ def _download(url, path, verbose=True):
 	return downloader.binary(url, path)
 
 
-def _extract(path, driver, out_file):
+def _extract(path, driver_pattern, out_file):
 	"""
 	Extracts zip files, or tar.gz files.
 	:param path: Path to the archive file, absolute.
-	:param driver:
+	:param driver_pattern:
 	:param out_file:
 	:return:
 	"""
@@ -95,7 +99,7 @@ def _extract(path, driver, out_file):
 	out_file = abspath(out_file)
 	if not isfile(path):
 		return None
-	tmp_path = join(dirname(out_file), 'tmp_dl_%s' % basename(path))
+	tmp_path = join(dirname(out_file), 'tmp_dl_dir_%s' % basename(path))
 	zip_ref, namelist = None, None
 	if path.endswith('.zip'):
 		zip_ref = zipfile.ZipFile(path, "r")
@@ -106,8 +110,9 @@ def _extract(path, driver, out_file):
 	if not zip_ref:
 		return None
 	ret = None
+	print(tmp_path, namelist)
 	for n in namelist:
-		if n.startswith(driver):
+		if re.match(driver_pattern, n):
 			zip_ref.extract(n, tmp_path)
 			ret = join(tmp_path, n)
 	zip_ref.close()
@@ -115,8 +120,11 @@ def _extract(path, driver, out_file):
 		if isfile(out_file):
 			os.remove(out_file)
 		os.rename(ret, out_file)
-		os.rmdir(tmp_path)
+		shutil.rmtree(tmp_path)
 		ret = out_file
 	os.remove(path)
 	return ret
 
+
+if __name__ == "__main__":
+	install(drivers.opera, overwrite=True)
