@@ -4,9 +4,9 @@ import subprocess
 import unittest
 
 
-class TestStringMethods(unittest.TestCase):
+class TestDriverInstalls(unittest.TestCase):
 
-	def test_upper(self):
+	def test_all_installs(self):
 		for driver in all_drivers:
 			print("Testing %s..." % driver.__name__)
 			data = install(browser=driver, verbose=True, chmod=True, overwrite=True, return_info=True)
