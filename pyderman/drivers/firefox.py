@@ -4,7 +4,6 @@ import re
 
 def get_url(version='latest', _os=None, _os_bit=None):
 	urls = github.find_links('mozilla', 'geckodriver', version)
-	print(urls)
 	for u in urls:
 		target = '%s%s' % (_os, _os_bit) if _os is not 'mac' else 'macos'
 		if target in u:
