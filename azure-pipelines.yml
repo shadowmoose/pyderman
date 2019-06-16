@@ -1,17 +1,6 @@
 # Create and test a Python package on multiple Python versions.
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
-trigger:
-  batch: 'true'
-  branches:
-    include:
-    - '*'
-  paths:
-    include:
-    - '*'
-    exclude:
-    - '*.md'
-
 strategy:
   matrix:
     Python35:
