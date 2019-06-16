@@ -2,7 +2,15 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
 trigger:
-- master
+  batch: 'true'
+  branches:
+    include:
+    - '*'
+  paths:
+    include:
+    - '*'
+    exclude:
+    - '*.md'
 
 strategy:
   matrix:
