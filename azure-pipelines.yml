@@ -25,11 +25,12 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
+    pip install pytest coverage
   displayName: 'Install & Upgrade pip'
 
 - script: |
-    pip install pytest
-    pytest pyderman/test.py --doctest-modules --junitxml=junit/test-results.xml
+    coverage run -m pytest pyderman/test.py --doctest-modules --junitxml=junit/test-results.xml
+    coverage report
   displayName: 'Test with pytest'
 
 - task: PublishTestResults@2
