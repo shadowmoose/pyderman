@@ -11,7 +11,7 @@ def readme(file='', split=False):
 
 setup(
 	name='pyderman',
-	version='1.0.1',
+	version='1.2.0',
 	description='Installs the latest Chrome/Firefox/Gecko web drivers automatically.',
 	long_description=readme('README.md'),
 	long_description_content_type='text/markdown',
