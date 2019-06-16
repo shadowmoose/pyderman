@@ -11,4 +11,4 @@ def get_url(version='latest', _os=None, _os_bit=None):
 
 
 if __name__ == "__main__":
-	print([u for u in get_url('2.42', 'win', '64')])
+	print([u for u in get_url('2.42', 'mac', '64')])
