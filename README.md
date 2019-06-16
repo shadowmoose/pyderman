@@ -1,11 +1,11 @@
 # Pyderman (Selenium Web Driver Installer) [![Build Status](https://dev.azure.com/theshadowmoose/theshadowmoose/_apis/build/status/shadowmoose.pyderman?branchName=master)](https://dev.azure.com/theshadowmoose/theshadowmoose/_build/latest?definitionId=1&branchName=master)
 
-This is a fast, easy, dependency-free package that can automatically find & download the newest (or whichever you specify) version of 
-the Google Chrome (chromedriver) or Firefox (geckodriver) web drivers.
+This is a fast, simple, dependency-free package that can automatically find & download any version of 
+the Google Chrome (chromedriver), Firefox (geckodriver), and Opera (operadriver) web drivers.
 
-This project was built to allow developers to seamlessly include selenium support on the user-side, without requiring any manual configuration on their part.
+This project was built to allow developers to seamlessly include selenium support on the user-side, without requiring any manual configuration on their part. It will automatically locate the correct driver binary for the platform & version you choose, as well as setting the os-specific permissions after downloading.
 
-It is tested on Windows/Linux/Mac, and supports os-specific permissions.
+It is tested daily on Windows/Linux/macOS against Python versions 3.5+.
 
 To install the library, run:
 ```
