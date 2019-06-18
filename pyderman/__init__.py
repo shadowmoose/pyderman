@@ -48,7 +48,7 @@ def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, ove
 			continue
 		driver_path, url, ver = data
 		driver = basename(driver_path)
-		exts = [e for e in ['.zip', '.tar.gz', '.tar.bz'] if url.endswith(e)]
+		exts = [e for e in ['.zip', '.tar.gz', '.tar.bz2'] if url.endswith(e)]
 		if len(exts) != 1:
 			raise Exception("Unable to locate file extension in URL: %s (%s)" % (url, ','.join(exts)))
 		archive = exts[0]
@@ -110,8 +110,8 @@ def _extract(path, driver_pattern, out_file):
 	elif path.endswith('.tar.gz'):
 		zip_ref = tarfile.open(path, "r:gz")
 		namelist = zip_ref.getnames()
-	elif path.endswith('.tar.bz'):
-		zip_ref = tarfile.open(path, "r:bz")
+	elif path.endswith('.tar.bz2'):
+		zip_ref = tarfile.open(path, "r:bz2")
 		namelist = zip_ref.getnames()
 	if not zip_ref:
 		return None
