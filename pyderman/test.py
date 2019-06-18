@@ -23,11 +23,3 @@ class TestDriverInstalls(unittest.TestCase):
 if __name__ == "__main__":
 	unittest.main()
 
-
-"""
-TODO:
-	https://github.com/operasoftware/operachromiumdriver/releases
-	http://phantomjs.org/download.html
-		https://bitbucket.org/ariya/phantomjs/downloads/?tab=downloads
-		https://api.bitbucket.org/2.0/repositories/ariya/phantomjs/downloads/
-"""
