@@ -7,7 +7,7 @@ import zipfile
 import tarfile
 from pyderman import drivers
 from pyderman.util import downloader
-from pyderman.drivers import all_drivers, chrome, firefox, opera
+from pyderman.drivers import all_drivers, chrome, firefox, opera, phantomjs
 
 
 _versions = sorted(['32', '64'], key=lambda _v: not platform.machine().endswith(_v))
@@ -48,7 +48,10 @@ def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, ove
 			continue
 		driver_path, url, ver = data
 		driver = basename(driver_path)
-		archive = '.zip' if url.endswith('.zip') else '.tar.gz'
+		exts = [e for e in ['.zip', '.tar.gz', '.tar.bz2'] if url.endswith(e)]
+		if len(exts) != 1:
+			raise Exception("Unable to locate file extension in URL: %s (%s)" % (url, ','.join(exts)))
+		archive = exts[0]
 
 		archive_path = join(abspath(file_directory), '%s_%s%s' % (driver, ver, archive))
 		file_path = join(abspath(file_directory), '%s_%s%s' % (driver, ver, _ext))
@@ -107,10 +110,12 @@ def _extract(path, driver_pattern, out_file):
 	elif path.endswith('.tar.gz'):
 		zip_ref = tarfile.open(path, "r:gz")
 		namelist = zip_ref.getnames()
+	elif path.endswith('.tar.bz2'):
+		zip_ref = tarfile.open(path, "r:bz2")
+		namelist = zip_ref.getnames()
 	if not zip_ref:
 		return None
 	ret = None
-	print(tmp_path, namelist)
 	for n in namelist:
 		if re.match(driver_pattern, n):
 			zip_ref.extract(n, tmp_path)

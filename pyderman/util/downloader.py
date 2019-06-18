@@ -11,7 +11,7 @@ except ImportError:
 def _open(url):
 	# noinspection PyBroadException
 	try:
-		return urlopen(url)
+		return urlopen(url, timeout=15)
 	except Exception:
 		return None
 

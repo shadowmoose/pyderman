@@ -11,8 +11,8 @@ def readme(file='', split=False):
 
 setup(
 	name='pyderman',
-	version='1.2.0',
-	description='Installs the latest Chrome/Firefox/Opera web drivers automatically.',
+	version='1.3.0',
+	description='Installs the latest Chrome/Firefox/Opera/PhantomJS web drivers automatically.',
 	long_description=readme('README.md'),
 	long_description_content_type='text/markdown',
 	url='http://github.com/shadowmoose/pyderman',
