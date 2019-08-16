@@ -3,9 +3,9 @@ name: Pytest
 on:
   push:
     paths:
-      - *.py
+    - '*.py'
   schedule:
-    - cron:  '0 8 * * *'
+  - cron:  '0 8 * * *'
 
 jobs:
   run-tests:
