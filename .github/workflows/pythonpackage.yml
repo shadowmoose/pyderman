@@ -1,6 +1,9 @@
-name: Python package
+name: Pytest
 
-on: [push]
+on:
+  push:
+  schedule:
+  - cron:  '0 8 * * *'
 
 jobs:
   run-tests:
