@@ -7,7 +7,7 @@ jobs:
     name: ${{ matrix.os }}, ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}-latest
     strategy:
-      max-parallel: 4
+      max-parallel: 9
       matrix:
         os: [ubuntu, windows] # TODO: macOS-latest, once the env properly sets up.
         python-version: [3.5, 3.6, 3.7]
