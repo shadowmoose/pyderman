@@ -34,7 +34,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: 3.7.4
+        python-version: 3.7
         os: macOS-latest
 
     steps:
