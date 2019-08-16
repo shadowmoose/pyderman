@@ -4,6 +4,7 @@ on:
   push:
     paths:
     - '*.py'
+    - '*.yml'
   schedule:
   - cron:  '0 8 * * *'
 
