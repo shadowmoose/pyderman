@@ -29,20 +29,17 @@ jobs:
         pytest pyderman/test.py
         
   test-mac:
-    name: Python ${{ matrix.python-version }} - on OSX
-    runs-on: ${{ matrix.os }}
+    name: Python 3.7.4 - on macOS
+    runs-on: 'macOS-latest'
     strategy:
       max-parallel: 4
-      matrix:
-        python-version: 3.7
-        os: macOS-latest
 
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.7.4'
         
     - name: Install dev dependencies
       run: |
