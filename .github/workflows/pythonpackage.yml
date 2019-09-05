@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 9
       matrix:
-        os: [ubuntu, windows] # TODO: macOS-latest, once the env properly sets up.
+        os: [ubuntu, windows, macOS]
         python-version: [3.5, 3.6, 3.7]
 
     steps:
