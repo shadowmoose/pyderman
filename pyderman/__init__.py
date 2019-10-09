@@ -81,6 +81,7 @@ def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, ove
 				'driver': driver
 			}
 		return out
+	raise Exception('Unable to locate a valid Web Driver.')
 
 
 def _download(url, path, verbose=True):

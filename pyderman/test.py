@@ -9,13 +9,22 @@ class TestDriverInstalls(unittest.TestCase):
 	def test_all_installs(self):
 		for driver in all_drivers:
 			print("Testing %s..." % driver.__name__)
-			data = install(browser=driver, verbose=True, chmod=True, overwrite=True, return_info=True)
+			data = None
+			try:
+				data = install(browser=driver, verbose=True, chmod=True, overwrite=True, return_info=True)
+			except OSError as err:
+				print(err)
+				pass
 			path = data['path']
 			if not os.path.exists(path):
 				raise FileNotFoundError('The %s executable was not properly downloaded.' % driver.__name__)
 			output = subprocess.check_output([path, '--version']).decode('utf-8')
 			print('Version:', output)
-			self.assertIn(data['version'], output.lower(), "Driver %s did not output proper version! ('%s')" % (driver.__name__, data['version']))
+			self.assertIn(
+				data['version'],
+				output.lower(),
+				msg="Driver %s did not output proper version! ('%s')" % (driver.__name__, data['version'])
+			)
 			print('%s is installed at: "%s"' % (data['driver'], path))
 			print('\n\n\n')
 
