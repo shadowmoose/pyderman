@@ -11,7 +11,7 @@ def readme(file='', split=False):
 
 setup(
 	name='pyderman',
-	version='1.4.0',
+	version='2.0.0',
 	description='Installs the latest Chrome/Firefox/Opera/PhantomJS/Edge web drivers automatically.',
 	long_description=readme('README.md'),
 	long_description_content_type='text/markdown',
