@@ -14,7 +14,7 @@ class TestDriverInstalls(unittest.TestCase):
 				data = install(browser=driver, verbose=True, chmod=True, overwrite=True, return_info=True)
 			except OSError as err:
 				print(err)
-				pass
+				continue  # OSError is raised if the given OS cannot support the driver, which we need to ignore.
 			path = data['path']
 			if not os.path.exists(path):
 				raise FileNotFoundError('The %s executable was not properly downloaded.' % driver.__name__)
