@@ -9,7 +9,6 @@ class TestDriverInstalls(unittest.TestCase):
 	def test_all_installs(self):
 		for driver in all_drivers:
 			print("Testing %s..." % driver.__name__)
-			data = None
 			try:
 				data = install(browser=driver, verbose=True, chmod=True, overwrite=True, return_info=True)
 			except OSError as err:
