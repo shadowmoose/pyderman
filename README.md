@@ -1,7 +1,7 @@
-  # Pyderman (Selenium Web Driver Installer) [![badge](https://action-badges.now.sh/shadowmoose/pyderman)](https://github.com/shadowmoose/pyderman/actions)
+  # Pyderman (Selenium Web Driver Installer) [![badge](https://github.com/shadowmoose/pyderman/workflows/Pytest/badge.svg)](https://github.com/shadowmoose/pyderman/actions)
 
 This is a fast, simple, dependency-free package that can automatically find & download any version of 
-the Google Chrome (chromedriver), Firefox (geckodriver), PhantomJS, and Opera (operadriver) web drivers.
+the Google Chrome (chromeDriver), Firefox (geckoDriver), PhantomJS, Opera (operaDriver), and Edge (edgeDriver)* web drivers.
 
 This project was built to allow developers to seamlessly include selenium support on the user-side, without requiring any manual configuration on their part. It will automatically locate the correct driver binary for the platform & version you choose, as well as setting the os-specific permissions after downloading.
 
@@ -34,6 +34,9 @@ print('Installed chromedriver to path: %s' % path)
 ```
 
 The download is very fast, and will skip downloading if the file already exists. This behavior can be toggled with ```overwrite```.
+
+### Note on MS Edge:
+Microsoft has switched Edge to use a flavor of Chrome behind the scenes. As of October 2019, Pyderman will download this MS Chromium Driver. There is currently no official release available for Linux, and their driver is experimental, so make sure you know what you're doing if you use this driver. If you require stability, it is recommended you specify a version instead of using the "latest".
 
 ## Why's it called 'Pyderman'?
 Because it installs *web*-drivers. [Get it?](https://youtu.be/SUtziaZlDeE)
