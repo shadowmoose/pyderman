@@ -24,6 +24,7 @@ def latest():
 	data = downloader.raw(url)
 	regex = r"https://msedgedriver\.azureedge\.net/(.+?)/edgedriver"
 	matches = list(set([m.group(1) for m in re.finditer(regex, data, re.MULTILINE)]))
+	matches = [m for m in matches if m.replace('.', '').isnumeric()]
 	matches.sort(key=lambda s: [int(u) for u in s.split('.')], reverse=True)
 	return matches[0]
 

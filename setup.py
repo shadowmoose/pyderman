@@ -20,7 +20,7 @@ setup(
 	author_email='shadowmoose@github.com',
 	license='MIT',
 	packages=find_packages(),
-	install_requires=[],
+	install_requires=readme('requirements.txt', split=True),
 	zip_safe=False)
 
 # python setup.py sdist;twine upload dist/*
