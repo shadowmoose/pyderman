@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-tests:
-    name: Windows, ${{ matrix.python-version }}
+    name: Python ${{ matrix.python-version }}
     runs-on: windows-latest
     strategy:
       max-parallel: 9
