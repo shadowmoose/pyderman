@@ -7,8 +7,6 @@ This project was built to allow developers to seamlessly include selenium suppor
 
 It is [tested daily](https://github.com/shadowmoose/pyderman/actions) on Windows/Linux/macOS against Python versions 3.5+.
 
-__Note:__ *Several of the recent MS Edge Driver builds have been released in a broken state for Mac. To check in-depth compatibility, open [the latest test](https://github.com/shadowmoose/pyderman/actions?query=workflow%3APytest).*
-
 To install the library, run:
 ```
 pip install pyderman
@@ -39,6 +37,8 @@ The download is very fast, and will skip downloading if the file already exists.
 
 ### Note on MS Edge:
 Microsoft has switched Edge to use a flavor of Chrome behind the scenes. As of October 2019, Pyderman will download this MS Chromium Driver. There is currently no official release available for Linux, and their driver is experimental, so make sure you know what you're doing if you use this driver. If you require stability, it is recommended you specify a version instead of using the "latest".
+
+__Mac OS:__ *Several of the recent MS Edge Driver builds have been released in a broken state for Mac. To check in-depth compatibility, open [the latest test](https://github.com/shadowmoose/pyderman/actions?query=workflow%3APytest).*
 
 ### Note on macOS
 Some versions of macOS have certificate issues with Python. Typically, in recent versions of Python, it will prompt you to install these when you install Python. Since Python needs these installed in order to make https requests, you may need to install these first. Depending on your project, it may also be possible to include a library to automatically import these certificates. Please visit [this link](https://timonweb.com/tutorials/fixing-certificate_verify_failed-error-when-trying-requests_html-out-on-mac/) to learn more.
