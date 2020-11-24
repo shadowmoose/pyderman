@@ -7,7 +7,7 @@ This project was built to allow developers to seamlessly include selenium suppor
 
 It is [tested daily](https://github.com/shadowmoose/pyderman/actions) on Windows/Linux/macOS against Python versions 3.5+.
 
-__Note:__ *The latest msEdgeDriver build is currently broken for Mac. To check in-depth compatibility, open [the latest test](https://github.com/shadowmoose/pyderman/actions?query=workflow%3APytest).*
+__Note:__ *Several of the recent MS Edge Driver builds have been released in a broken state for Mac. To check in-depth compatibility, open [the latest test](https://github.com/shadowmoose/pyderman/actions?query=workflow%3APytest).*
 
 To install the library, run:
 ```
