@@ -1,4 +1,4 @@
-name: Windows
+name: MacOS
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
 
 jobs:
   run-tests:
-    name: Windows, ${{ matrix.python-version }}
-    runs-on: windows-latest
+    name: Python ${{ matrix.python-version }}
+    runs-on: macOS-latest
     strategy:
       max-parallel: 9
       fail-fast: false
@@ -30,4 +30,3 @@ jobs:
     - name: Test with pytest
       run: |
         pytest pyderman/test.py
-

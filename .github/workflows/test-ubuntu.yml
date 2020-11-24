@@ -1,4 +1,4 @@
-name: Pytest
+name: Ubuntu
 
 on:
   push:
@@ -7,14 +7,13 @@ on:
 
 jobs:
   run-tests:
-    name: ${{ matrix.os }}, ${{ matrix.python-version }}
-    runs-on: ${{ matrix.os }}-latest
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
     strategy:
       max-parallel: 9
       fail-fast: false
       matrix:
-        os: [ubuntu, windows, macOS]
-        python-version: [3.5, 3.6, 3.7]
+        python-version: [3.5, 3.7, 3.9]
 
     steps:
     - uses: actions/checkout@v1
@@ -31,4 +30,3 @@ jobs:
     - name: Test with pytest
       run: |
         pytest pyderman/test.py
-
