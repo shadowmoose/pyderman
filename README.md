@@ -1,5 +1,5 @@
   # Pyderman (Selenium Web Driver Installer)
-  ![Ubuntu](https://github.com/shadowmoose/pyderman/workflows/Ubuntu/badge.svg) ![MacOS](https://github.com/shadowmoose/pyderman/workflows/MacOS/badge.svg) ![Windows](https://github.com/shadowmoose/pyderman/workflows/Windows/badge.svg)
+  [![Ubuntu](https://github.com/shadowmoose/pyderman/workflows/Ubuntu/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AUbuntu) [![MacOS](https://github.com/shadowmoose/pyderman/workflows/MacOS/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AMacOS) [![Windows](https://github.com/shadowmoose/pyderman/workflows/Windows/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AWindows)
 
 This is a fast, simple, dependency-free package that can automatically find & download any version of 
 the Google Chrome (chromeDriver), Firefox (geckoDriver), PhantomJS, Opera (operaDriver), and Edge (edgeDriver)* web drivers.
