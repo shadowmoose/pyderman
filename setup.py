@@ -11,7 +11,7 @@ def readme(file='', split=False):
 
 setup(
 	name='pyderman',
-	version='2.0.0',
+	version='2.0.1',
 	description='Installs the latest Chrome/Firefox/Opera/PhantomJS/Edge web drivers automatically.',
 	long_description=readme('README.md'),
 	long_description_content_type='text/markdown',
@@ -20,7 +20,8 @@ setup(
 	author_email='shadowmoose@github.com',
 	license='MIT',
 	packages=find_packages(),
-	install_requires=readme('requirements.txt', split=True),
-	zip_safe=False)
+	install_requires=[],  # readme('requirements.txt', split=True),
+	zip_safe=False
+)
 
 # python setup.py sdist;twine upload dist/*
