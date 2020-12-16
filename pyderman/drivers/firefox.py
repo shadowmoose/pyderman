@@ -5,7 +5,7 @@ import re
 def get_url(version='latest', _os=None, _os_bit=None):
 	urls = github.find_links('mozilla', 'geckodriver', version)
 	for u in urls:
-		target = '%s%s' % (_os, _os_bit) if _os is not 'mac' else 'macos'
+		target = '%s%s' % (_os, _os_bit) if _os != 'mac' else 'macos'
 		if target in u:
 			ver = re.search(r'v(\d{1,2}\.\d{1,2}\.\d{1,2})', u).group(1)
 			return 'geckodriver', u, ver
