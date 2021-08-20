@@ -5,7 +5,7 @@ import unittest
 import platform
 
 
-def test_driver(driver, self):
+def process_driver(driver, self):
 	print("Testing %s..." % driver.__name__)
 	try:
 		data = install(browser=driver, verbose=True, chmod=True, overwrite=True, return_info=True)
@@ -36,19 +36,19 @@ class TestDriverInstalls(unittest.TestCase):
 		print('Release:', platform.release())
 		
 	def test_chrome(self):
-		test_driver(chrome, self)
+		process_driver(chrome, self)
 		
 	def test_firefox(self):
-		test_driver(firefox, self)
+		process_driver(firefox, self)
 
 	def test_opera(self):
-		test_driver(opera, self)
+		process_driver(opera, self)
 
 	def test_phantomjs(self):
-		test_driver(phantomjs, self)
+		process_driver(phantomjs, self)
 
 	def test_edge(self):
-		test_driver(edge, self)
+		process_driver(edge, self)
 
 if __name__ == "__main__":
 	unittest.main()
