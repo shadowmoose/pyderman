@@ -9,6 +9,9 @@ def get_url(version='latest', _os=None, _os_bit=None):
 		version = downloader.raw(_base_version)
 	if not version:
 		raise Exception("Unable to locate latest ChromeDriver version!")
+	if _os === 'mac-sur':
+		_os = 'mac' # chromedriver_mac64_m1
+		_os_bit = _os_bit + '_m1'
 	download = _base_download % (version, _os, _os_bit)
 	return 'chromedriver', download, version
 
