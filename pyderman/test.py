@@ -7,6 +7,11 @@ import unittest
 class TestDriverInstalls(unittest.TestCase):
 
 	def test_all_installs(self):
+		print('Machine:', platform.machine())
+		print('Platform:', platform.platform())
+		print('Arch:', platform.architecture())
+		print('Processor:', platform.processor())
+		
 		for driver in all_drivers:
 			print("Testing %s..." % driver.__name__)
 			try:
