@@ -2,6 +2,7 @@ import os
 from pyderman import install, all_drivers
 import subprocess
 import unittest
+import platform
 
 
 class TestDriverInstalls(unittest.TestCase):
