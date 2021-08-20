@@ -7,7 +7,7 @@ import zipfile
 import tarfile
 from pyderman import drivers
 from pyderman.util import downloader
-from pyderman.drivers import all_drivers, chrome, firefox, opera, phantomjs
+from pyderman.drivers import all_drivers, chrome, firefox, opera, phantomjs, edge
 
 
 _versions = sorted(['32', '64'], key=lambda _v: not platform.machine().endswith(_v))
