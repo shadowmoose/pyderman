@@ -12,6 +12,7 @@ class TestDriverInstalls(unittest.TestCase):
 		print('Platform:', platform.platform())
 		print('Arch:', platform.architecture())
 		print('Processor:', platform.processor())
+		print('Release:', platform.release())
 		
 		for driver in all_drivers:
 			print("Testing %s..." % driver.__name__)
