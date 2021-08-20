@@ -8,7 +8,7 @@ on:
 jobs:
   run-tests:
     name: Python ${{ matrix.python-version }}
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     strategy:
       max-parallel: 9
       fail-fast: false
