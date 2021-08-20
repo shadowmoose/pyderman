@@ -1,5 +1,5 @@
   # Pyderman (Selenium Web Driver Installer)
-  [![Ubuntu](https://github.com/shadowmoose/pyderman/workflows/Ubuntu/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AUbuntu) [![MacOS](https://github.com/shadowmoose/pyderman/workflows/MacOS/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AMacOS) [![Windows](https://github.com/shadowmoose/pyderman/workflows/Windows/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AWindows)
+  [![Ubuntu](https://github.com/shadowmoose/pyderman/workflows/Ubuntu/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AUbuntu) [![MacOS](https://github.com/shadowmoose/pyderman/workflows/MacOS/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AMacOS) [![Windows](https://github.com/shadowmoose/pyderman/workflows/Windows/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AWindows) [![MacOS (SUR)](https://github.com/shadowmoose/pyderman/actions/workflows/test-macOS-sur.yml/badge.svg)](https://github.com/shadowmoose/pyderman/actions/workflows/test-macOS-sur.yml)
 
 This is a fast, simple, dependency-free package that can automatically find & download any version of 
 the Google Chrome (chromeDriver), Firefox (geckoDriver), PhantomJS, Opera (operaDriver), and Edge (edgeDriver)* web drivers.
@@ -43,6 +43,9 @@ __Mac OS:__ *Several of the recent MS Edge Driver builds have been released in a
 
 ### Note on macOS
 Some versions of macOS have certificate issues with Python. Typically, in recent versions of Python, it will prompt you to install these when you install Python. Since Python needs these installed in order to make https requests, you may need to install these first. Depending on your project, it may also be possible to include a library to automatically import these certificates. Please visit [this link](https://timonweb.com/tutorials/fixing-certificate_verify_failed-error-when-trying-requests_html-out-on-mac/) to learn more.
+
+### Big Sur
+Apple broke a ton of compatibility moving to Big Sur, and now many of the web drivers do not have working builds within the new architecture. This project will only halfheartedly attempt to keep any drivers working on Big Sur architecture until all the available drivers have stable release patterns for the platform.
 
 ## Why's it called 'Pyderman'?
 Because it installs *web*-drivers. [Get it?](https://youtu.be/SUtziaZlDeE)
