@@ -7,7 +7,7 @@ import zipfile
 import tarfile
 from pyderman import drivers
 from pyderman.util import downloader
-from pyderman.drivers import all_drivers, chrome, firefox, opera, phantomjs
+from pyderman.drivers import all_drivers, chrome, firefox, opera, phantomjs, edge
 
 
 _versions = sorted(['32', '64'], key=lambda _v: not platform.machine().endswith(_v))
@@ -19,6 +19,8 @@ for _o in _os_opts:
 	if _o[0] in platform.system().lower():
 		_current_os = _o[1]
 		_ext = _o[2]
+if _current_os == 'mac' and int(platform.release().split('.')[0]) >= 20:
+	_current_os = 'mac-sur'
 
 
 def install(browser=None, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version='latest', filename=None, return_info=False):
