@@ -10,6 +10,11 @@ from pyderman.util import downloader
 from pyderman.drivers import all_drivers, chrome, firefox, opera, phantomjs
 
 
+print('Machine:', platform.machine())
+print('Platform:', platform.platform())
+print('Arch:', platform.architecture())
+print('Processor:', platform.processor())
+
 _versions = sorted(['32', '64'], key=lambda _v: not platform.machine().endswith(_v))
 _os_opts = [('win', 'win', '.exe'), ('darwin', 'mac', ''), ('linux', 'linux', '')]
 
