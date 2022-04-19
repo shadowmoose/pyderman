@@ -3,10 +3,12 @@ from os import makedirs
 from os.path import abspath, dirname, isdir
 
 try:
-    from urllib.request import urlopen  # Python 3
+    # Python 3
+    from urllib.request import urlopen
 except ImportError:
+    # Python 2
     # noinspection PyUnresolvedReferences
-    from urllib2 import urlopen  # Python 2
+    from urllib2 import urlopen  # type: ignore[import,no-redef]
 
 
 def _open(url):
