@@ -1,10 +1,15 @@
+from __future__ import annotations
+
 import json
 import re
+from typing import Any, Generator
 
 from pyderman.util import downloader
 
 
-def get_url(version="latest", _os=None, _os_bit=None):
+def get_url(
+    version: str = "latest", _os: str | None = None, _os_bit: str | None = None
+) -> tuple[str, str, str]:
     beta = True
     pattern = version
     bit = ""
@@ -14,21 +19,31 @@ def get_url(version="latest", _os=None, _os_bit=None):
     if _os == "linux":
         bit = "64" if _os_bit == "64" else "i686"
     for release in _releases():
-        name = release["name"].lower()
+        name = str(release["name"]).lower()
         if not beta and "beta" in name:
             continue
-        if _os in name and pattern in name and bit in name:
-            ver = re.search(r"(\d{1,2}\.\d{1,2}\.\d{1,2})", name).group(1)
-            return "phantomjs.*/bin/phantomjs", release["links"]["self"]["href"], ver
+        if _os is not None and _os in name and pattern in name and bit in name:
+            ver = re.search(r"(\d{1,2}\.\d{1,2}\.\d{1,2})", name)
+            if ver is not None:
+                return (
+                    "phantomjs.*/bin/phantomjs",
+                    release["links"]["self"]["href"],
+                    str(ver.group(1)),
+                )
+    raise ValueError("Unable to get url")
 
 
-def _releases():
+def _releases() -> Generator[dict[str, Any], None, None]:
     page = "https://api.bitbucket.org/2.0/repositories/ariya/phantomjs/downloads/"
     while page:
-        data = json.loads(downloader.raw(page))
-        for release in data["values"]:
-            yield release
-        page = data["next"] if "next" in data else None
+        s = downloader.raw(page)
+        if s is None:
+            raise ValueError("Unable to get page: %s" % page)
+        else:
+            data = json.loads(s)
+            for release in data["values"]:
+                yield release
+            page = data["next"] if "next" in data else None
 
 
 if __name__ == "__main__":

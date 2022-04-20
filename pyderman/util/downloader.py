@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import shutil
 from os import makedirs
 from os.path import abspath, dirname, isdir
+from typing import Any
 
 try:
     # Python 3
@@ -11,7 +14,7 @@ except ImportError:
     from urllib2 import urlopen  # type: ignore[import,no-redef]
 
 
-def _open(url):
+def _open(url: str) -> Any:
     # noinspection PyBroadException
     try:
         return urlopen(url, timeout=15)
@@ -19,17 +22,17 @@ def _open(url):
         return None
 
 
-def raw(url):
+def raw(url: str) -> str | None:
     resp = _open(url)
     if not resp:
-        return False
+        return None
     c_type = resp.headers.get_content_charset()
     c_type = c_type if c_type else "utf-8"
     html = resp.read().decode(c_type, errors="ignore")
-    return html
+    return str(html)
 
 
-def binary(url, file, length=16 * 1024):
+def binary(url: str, file: str, length: int = 16 * 1024) -> bool:
     file = abspath(file)
     if not isdir(dirname(file)):
         makedirs(dirname(file), exist_ok=True)

@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import os
 import platform
 import re
 import shutil
 import tarfile
 import zipfile
+from types import ModuleType
 from os.path import abspath, basename, dirname, isfile, join
 
 from pyderman import drivers
@@ -26,15 +29,15 @@ if _current_os == "mac" and int(platform.release().split(".")[0]) >= 20:
 
 
 def install(
-    browser=None,
-    file_directory="./lib/",
-    verbose=True,
-    chmod=True,
-    overwrite=False,
-    version="latest",
-    filename=None,
-    return_info=False,
-):
+    browser: ModuleType | None = None,
+    file_directory: str = "./lib/",
+    verbose: bool = True,
+    chmod: bool = True,
+    overwrite: bool = False,
+    version: str = "latest",
+    filename: str | None = None,
+    return_info: bool = False,
+) -> str | dict[str, str | None] | None:
     """
     Downloads the given browser driver, and returns the path it was saved to.
 
@@ -85,38 +88,39 @@ def install(
             continue
 
         out = _extract(archive_path, driver_path, file_path)
-        if out and chmod:
+        if out is not None and chmod is not None:
             mode = os.stat(out).st_mode
             mode |= (mode & 0o444) >> 2  # copy R bits to X
             os.chmod(out, mode)
 
         if return_info:
-            return {"path": out, "version": ver, "driver": driver}
+            return {"path": out, "version": str(ver), "driver": str(driver)}
         return out
     raise Exception("Unable to locate a valid Web Driver.")
 
 
-def _download(url, path, verbose=True):
+def _download(url: str, path: str, verbose: bool = True) -> bool:
     if verbose:
         print("\tDownloading from: ", url)
         print("\tTo: ", path)
     return downloader.binary(url, path)
 
 
-def _extract(path, driver_pattern, out_file):
+def _extract(path: str, driver_pattern: str, out_file: str) -> str | None:
     """
     Extracts zip files, or tar.gz files.
     :param path: Path to the archive file, absolute.
     :param driver_pattern:
     :param out_file:
-    :return:
+    :return: extracted file path.
     """
     path = abspath(path)
     out_file = abspath(out_file)
     if not isfile(path):
         return None
     tmp_path = join(dirname(out_file), "tmp_dl_dir_%s" % basename(path))
-    zip_ref, namelist = None, None
+    zip_ref: zipfile.ZipFile | tarfile.TarFile | None = None
+    namelist: list[str] = []
     if path.endswith(".zip"):
         zip_ref = zipfile.ZipFile(path, "r")
         namelist = zip_ref.namelist()
