@@ -59,7 +59,7 @@ The download is very fast, and will skip downloading if the file already exists.
 
 ## Notes
 
-## Note on MS Edge
+### Note on MS Edge
 
 Microsoft has switched Edge to use a flavor of Chrome behind the scenes. As of October 2019, Pyderman will download this MS Chromium Driver. There is currently no official release available for Linux, and their driver is experimental, so make sure you know what you're doing if you use this driver. If you require stability, it is recommended you specify a version instead of using the "latest".
 
