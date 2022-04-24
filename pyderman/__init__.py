@@ -72,8 +72,10 @@ def install(
             )
         archive = exts[0]
 
-        archive_path = join(abspath(file_directory), "%s_%s%s" % (driver, ver, archive))
-        file_path = join(abspath(file_directory), "%s_%s%s" % (driver, ver, _ext))
+        archive_path = join(
+            abspath(file_directory), "{}_{}{}".format(driver, ver, archive)
+        )
+        file_path = join(abspath(file_directory), "{}_{}{}".format(driver, ver, _ext))
         if filename:
             file_path = join(abspath(file_directory), filename)
 

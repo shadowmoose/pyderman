@@ -10,7 +10,7 @@ def get_url(
 ) -> tuple[str, str, str]:
     urls = github.find_links("mozilla", "geckodriver", version)
     for u in urls:
-        target = "%s%s." % (_os, _os_bit) if _os != "mac" else "macos."
+        target = "{}{}.".format(_os, _os_bit) if _os != "mac" else "macos."
         if _os == "mac-sur":
             target = "macos-aarch64."
         if target in u:

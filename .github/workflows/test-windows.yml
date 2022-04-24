@@ -30,4 +30,3 @@ jobs:
     - name: Test with pytest
       run: |
         pytest pyderman/test.py
-
