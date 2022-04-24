@@ -6,8 +6,8 @@ import re
 import shutil
 import tarfile
 import zipfile
-from types import ModuleType
 from os.path import abspath, basename, dirname, isfile, join
+from types import ModuleType
 
 from pyderman import drivers
 from pyderman.drivers import all_drivers, chrome, edge, firefox, opera, phantomjs
