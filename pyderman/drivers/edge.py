@@ -14,7 +14,7 @@ def get_url(
         except Exception as e:
             print(e)
     if _os == "win":
-        url = "https://msedgedriver.azureedge.net/%s/edgedriver_win%s.zip" % (
+        url = "https://msedgedriver.azureedge.net/{}/edgedriver_win{}.zip".format(
             version,
             _os_bit,
         )
@@ -34,13 +34,11 @@ def latest() -> str:
         raise Exception("Unable to get: %s" % url)
     regex = r"https://msedgedriver\.azureedge\.net/(.+?)/edgedriver"
     matches = list(
-        set(
-            [
-                str(m.group(1))
-                for m in re.finditer(regex, data, re.MULTILINE)
-                if type(m) is re.Match
-            ]
-        )
+        {
+            str(m.group(1))
+            for m in re.finditer(regex, data, re.MULTILINE)
+            if type(m) is re.Match
+        }
     )
     matches = [m for m in matches if m.replace(".", "").isnumeric()]
     matches.sort(key=lambda s: [int(u) for u in s.split(".")], reverse=True)

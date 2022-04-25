@@ -9,7 +9,7 @@ from types import ModuleType
 from pyderman import chrome, edge, firefox, install, opera, phantomjs
 
 
-def process_driver(driver: ModuleType, self: "TestDriverInstalls") -> None:
+def process_driver(driver: ModuleType, self: TestDriverInstalls) -> None:
     print("Testing %s..." % driver.__name__)
     try:
         data = install(
@@ -31,7 +31,7 @@ def process_driver(driver: ModuleType, self: "TestDriverInstalls") -> None:
         msg="Driver %s did not output proper version! ('%s')"
         % (driver.__name__, data["version"]),
     )
-    print('%s is installed at: "%s"' % (data["driver"], path))
+    print('{} is installed at: "{}"'.format(data["driver"], path))
     print("\n\n\n")
 
 

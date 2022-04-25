@@ -6,8 +6,8 @@ import re
 import shutil
 import tarfile
 import zipfile
-from types import ModuleType
 from os.path import abspath, basename, dirname, isfile, join
+from types import ModuleType
 
 from pyderman import drivers
 from pyderman.drivers import all_drivers, chrome, edge, firefox, opera, phantomjs
@@ -72,8 +72,10 @@ def install(
             )
         archive = exts[0]
 
-        archive_path = join(abspath(file_directory), "%s_%s%s" % (driver, ver, archive))
-        file_path = join(abspath(file_directory), "%s_%s%s" % (driver, ver, _ext))
+        archive_path = join(
+            abspath(file_directory), "{}_{}{}".format(driver, ver, archive)
+        )
+        file_path = join(abspath(file_directory), "{}_{}{}".format(driver, ver, _ext))
         if filename:
             file_path = join(abspath(file_directory), filename)
 

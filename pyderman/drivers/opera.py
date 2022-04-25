@@ -12,7 +12,7 @@ def get_url(
         "operasoftware", "operachromiumdriver", version, prefix="v."
     )
     for u in urls:
-        if "%s%s" % (_os, _os_bit) in u:
+        if "{}{}".format(_os, _os_bit) in u:
             ver = re.search(r"v\.(\d{1,2}\.\d{1,2})", u)
             if ver is not None:
                 return "operadriver.*/operadriver", u, str(ver.group(1))
