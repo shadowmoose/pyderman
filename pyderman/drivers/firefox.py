@@ -11,7 +11,7 @@ def get_url(
     urls = github.find_links("mozilla", "geckodriver", version)
     for u in urls:
         target = "{}{}.".format(_os, _os_bit) if _os != "mac" else "macos."
-        if _os == "mac-sur":
+        if _os == "mac-m1":
             target = "macos-aarch64."
         if target in u:
             ver = re.search(r"v(\d{1,2}\.\d{1,2}\.\d{1,2})", u)

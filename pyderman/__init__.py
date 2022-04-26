@@ -4,6 +4,7 @@ import os
 import platform
 import re
 import shutil
+import subprocess
 import tarfile
 import zipfile
 from os.path import abspath, basename, dirname, isfile, join
@@ -24,8 +25,15 @@ for _o in _os_opts:
     if _o[0] in platform.system().lower():
         _current_os = _o[1]
         _ext = _o[2]
-if _current_os == "mac" and int(platform.release().split(".")[0]) >= 20:
-    _current_os = "mac-sur"
+if (
+    _current_os == "mac"
+    and shutil.which("sysctl")
+    and subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"])
+    .decode("utf-8")
+    .lower()
+    .startswith("apple m1")
+):
+    _current_os = "mac-m1"
 
 
 def install(

@@ -19,7 +19,7 @@ def get_url(
         resolved_version = version
     if not resolved_version:
         raise Exception("Unable to locate ChromeDriver version: {}!".format(version))
-    if _os == "mac-sur":
+    if _os == "mac-m1":
         _os = "mac"  # chromedriver_mac64_m1
         _os_bit = "%s_m1" % _os_bit
     download = _base_download % (resolved_version, _os, _os_bit)
