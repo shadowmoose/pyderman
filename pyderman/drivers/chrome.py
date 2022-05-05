@@ -17,9 +17,9 @@ def get_url(
     elif match:
         major, minor, patch, build = match.groups()
         if patch:
-            patch_version = f"{major}.{minor}.{patch}"
+            patch_version = "{}.{}.{}".format(major, minor, patch)
         else:
-            patch_version = f"{major}"
+            patch_version = major
         resolved_version = downloader.raw("{}_{}".format(_base_version, patch_version))
     else:
         resolved_version = version
