@@ -108,6 +108,14 @@ class TestChrome(unittest.TestCase):
     def test_get_build(self) -> None:
         self.chrome_version(f"{self.latest}")
 
+    def test_get_nonsense(self) -> None:
+        with self.assertRaises(Exception) as exc:
+            self.chrome_version("25.25.25.25")
+        self.assertEqual(
+            str(exc.exception), "Unable to locate ChromeDriver version: 25.25.25.25!"
+        )
+        return
+
 
 if __name__ == "__main__":
     unittest.main()
