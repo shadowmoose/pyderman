@@ -11,10 +11,16 @@ _base_download = "https://chromedriver.storage.googleapis.com/%s/chromedriver_%s
 def get_url(
     version: str = "latest", _os: str | None = None, _os_bit: str | None = None
 ) -> tuple[str, str, str]:
+    match = re.match(r"^(\d*)[.]?(\d*)[.]?(\d*)[.]?(\d*)$", version)
     if version == "latest":
         resolved_version = downloader.raw(_base_version)
-    elif re.match(r"\d+(\.\d+\.\d+)?", version):
-        resolved_version = downloader.raw("{}_{}".format(_base_version, version))
+    elif match:
+        major, minor, patch, build = match.groups()
+        if patch:
+            patch_version = "{}.{}.{}".format(major, minor, patch)
+        else:
+            patch_version = major
+        resolved_version = downloader.raw("{}_{}".format(_base_version, patch_version))
     else:
         resolved_version = version
     if not resolved_version:

@@ -2,9 +2,18 @@ from __future__ import annotations
 
 import os
 import platform
+import re
 import subprocess
 import unittest
 from types import ModuleType
+
+try:
+    # Python 3
+    from urllib.request import urlopen
+except ImportError:
+    # Python 2
+    # noinspection PyUnresolvedReferences
+    from urllib2 import urlopen  # type: ignore[import,no-redef]
 
 from pyderman import chrome, edge, firefox, install, opera, phantomjs
 
@@ -57,6 +66,55 @@ class TestDriverInstalls(unittest.TestCase):
 
     def test_edge(self) -> None:
         process_driver(edge, self)
+
+
+class TestChrome(unittest.TestCase):
+    def setUp(self) -> None:
+        version_re = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)$")
+        url = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
+        resp = urlopen(url, timeout=15)
+        html = resp.read().decode("utf-8", errors="ignore")
+        version_string = str(html)
+        self.latest = version_string
+
+        match = version_re.match(version_string)
+        if not match:
+            raise ValueError("Invalid version string: %r" % version_string)
+
+        major, minor, patch, build = match.groups()
+        self.major = major
+        self.minor = minor
+        self.patch = patch
+        self.build = build
+        return
+
+    def chrome_version(self, version: str) -> None:
+        drvr, url, vers = chrome.get_url(version, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_mac64.zip",
+        )
+
+    def test_get_latest(self) -> None:
+        self.chrome_version("latest")
+
+    def test_get_major(self) -> None:
+        self.chrome_version(f"{self.major}")
+
+    def test_get_patch(self) -> None:
+        self.chrome_version(f"{self.major}.{self.minor}.{self.patch}")
+
+    def test_get_build(self) -> None:
+        self.chrome_version(f"{self.latest}")
+
+    def test_get_nonsense(self) -> None:
+        with self.assertRaises(Exception) as exc:
+            self.chrome_version("25.25.25.25")
+        self.assertEqual(
+            str(exc.exception), "Unable to locate ChromeDriver version: 25.25.25.25!"
+        )
+        return
 
 
 if __name__ == "__main__":
