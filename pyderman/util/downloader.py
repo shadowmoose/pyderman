@@ -22,12 +22,12 @@ def _open(url: str) -> Any:
         return None
 
 
-def raw(url: str) -> str | None:
+def raw(url: str, encoding: str = "utf-8") -> str | None:
     resp = _open(url)
     if not resp:
         return None
     c_type = resp.headers.get_content_charset()
-    c_type = c_type if c_type else "utf-8"
+    c_type = c_type if c_type else encoding
     html = resp.read().decode(c_type, errors="ignore")
     return str(html)
 

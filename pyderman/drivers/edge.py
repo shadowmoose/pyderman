@@ -29,7 +29,7 @@ def get_url(
 
 def latest() -> str:
     url = "https://msedgewebdriverstorage.blob.core.windows.net/edgewebdriver/LATEST_STABLE"
-    data = downloader.raw(url)
+    data = downloader.raw(url, "utf-16")
     if data is None:
         raise Exception("Unable to get: %s" % url)
     return data.strip()
@@ -37,3 +37,4 @@ def latest() -> str:
 
 if __name__ == "__main__":
     print(get_url("latest", "win", "64"))
+    print(get_url("latest", "linux", "64"))
