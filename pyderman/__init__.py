@@ -49,7 +49,7 @@ def install(
     """
     Downloads the given browser driver, and returns the path it was saved to.
 
-    :param browser: The Driver to download. Pass as `pyderman.chrome/firefox`. Default Chrome.
+    :param browser: The Driver to download. Pass as `pyderman.chrome/firefox/etc.`. Default Chrome.
     :param file_directory: The directory to save the driver.
     :param verbose: If printouts are okay during downloading.
     :param chmod: If True, attempt to make the downloaded driver executable.
