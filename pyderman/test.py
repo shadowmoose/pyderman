@@ -117,5 +117,103 @@ class TestChrome(unittest.TestCase):
         return
 
 
+class TestEdge(unittest.TestCase):
+    version_re = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)$")
+    stable = None
+
+    @staticmethod
+    def fetch(url: str) -> str:
+        resp = urlopen(url, timeout=15)
+        html = resp.read().decode("utf-16", errors="ignore").strip()
+        return str(html)
+
+    def setUp(self) -> None:
+        url = "https://msedgedriver.azureedge.net/LATEST_STABLE"
+        if self.stable is None:
+            self.stable = self.fetch(url)
+
+            match = self.version_re.match(self.stable)
+            if not match:
+                raise ValueError(f"Invalid version string: {self.stable!r}")
+
+            major, minor, patch, build = match.groups()
+            self.major = major
+        return
+
+    def get_latest_os(self, major: str, _os: str) -> str:
+        url = f"https://msedgedriver.azureedge.net/LATEST_RELEASE_{major}_{_os.upper()}"
+        return self.fetch(url)
+
+    def test_get_latest_mac(self) -> None:
+        drvr, url, vers = edge.get_url("latest", _os="mac", _os_bit="64")
+        latest_mac = self.get_latest_os(self.major, "MACOS")
+        self.assertEqual(vers, latest_mac)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{latest_mac}/edgedriver_mac64.zip",
+        )
+
+    def test_get_latest_linux(self) -> None:
+        drvr, url, vers = edge.get_url("latest", _os="linux", _os_bit="64")
+        latest_linux = self.get_latest_os(self.major, "LINUX")
+        self.assertEqual(vers, latest_linux)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{latest_linux}/edgedriver_linux64.zip",
+        )
+
+    def test_get_latest_windows(self) -> None:
+        drvr, url, vers = edge.get_url("latest", _os="win", _os_bit="64")
+        latest_win = self.get_latest_os(self.major, "WINDOWS")
+        self.assertEqual(vers, latest_win)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{latest_win}/edgedriver_win64.zip",
+        )
+
+    def test_get_major(self) -> None:
+        """only proves url is created, not that it's valid"""
+        drvr, url, vers = edge.get_url(f"{self.major}", _os="mac", _os_bit="64")
+        self.assertEqual(vers, f"{self.major}")
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.major}/edgedriver_mac64.zip",
+        )
+
+    def test_get_build(self) -> None:
+        # self.edge_version(f"{self.latest}")
+        url_latest = f"https://msedgedriver.azureedge.net/LATEST_RELEASE_{self.major}"
+        self.latest = self.fetch(url_latest)
+
+        match_latest = self.version_re.match(self.latest)
+        if not match_latest:
+            raise ValueError(f"Invalid version string: {self.latest!r}")
+
+        major_latest, minor_latest, patch_latest, build_latest = match_latest.groups()
+        self.major_latest = major_latest
+
+        drvr, url, vers = edge.get_url(f"{self.latest}", _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64.zip",
+        )
+
+    # not supported by https://msedgedriver.azureedge.net
+    # def test_get_nonsense(self) -> None:
+    #     with self.assertRaises(Exception) as exc:
+    #         self.edge_version("25.25.25.25")
+    #     self.assertEqual(str(exc.exception),
+    #                      "Unable to locate EdgeDriver version: 25.25.25.25!")
+    #     return
+
+    def test_get_invalid_os(self) -> None:
+        with self.assertRaises(OSError) as exc:
+            edge.get_url("1.2.3.4", "lcars", "4096")
+        self.assertEqual(
+            str(exc.exception), "There is no valid EdgeDriver release for lcars"
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
