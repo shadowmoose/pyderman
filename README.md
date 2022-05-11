@@ -23,7 +23,7 @@ the *Google Chrome (chromeDriver), Firefox (geckoDriver), PhantomJS, Opera (oper
 
 This project was built to allow developers to seamlessly include selenium support on the user-side, without requiring any manual configuration on their part. It will automatically locate the correct driver binary for the platform & version you choose, as well as setting the os-specific permissions after downloading.
 
-It is [tested daily](https://github.com/shadowmoose/pyderman/actions) on Windows/Linux/macOS against Python versions 3.5+.
+It is [tested daily](https://github.com/shadowmoose/pyderman/actions) on Windows/Linux/macOS against Python versions 3.7+.
 
 ## Installation
 
