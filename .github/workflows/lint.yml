@@ -3,8 +3,9 @@ name: Lint
 on:
   push:
     branches: ["master"]
-    paths-ignore:
-      - '**/README.md'
+    paths:
+      - '**.py'
+      - '**.yml'
   pull_request:
   workflow_dispatch:
 

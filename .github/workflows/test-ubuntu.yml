@@ -2,8 +2,9 @@ name: Ubuntu
 
 on:
   push:
-    paths-ignore:
-      - '**/README.md'
+    paths:
+      - '**.py'
+      - '**.yml'
   schedule:
   - cron:  '0 8 * * *'
 
