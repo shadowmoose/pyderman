@@ -14,7 +14,7 @@ from pyderman import drivers
 from pyderman.drivers import all_drivers, chrome, edge, firefox, opera, phantomjs
 from pyderman.util import downloader
 
-__version__ = "3.2.0"
+__version__ = "3.2.1"
 
 _versions = sorted(["32", "64"], key=lambda _v: not platform.machine().endswith(_v))
 _os_opts = [("win", "win", ".exe"), ("darwin", "mac", ""), ("linux", "linux", "")]
