@@ -153,6 +153,14 @@ class TestEdge(unittest.TestCase):
             f"https://msedgedriver.azureedge.net/{latest_mac}/edgedriver_mac64.zip",
         )
 
+    def test_get_stable_mac(self) -> None:
+        drvr, url, vers = edge.get_url("stable", _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.stable)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.stable}/edgedriver_mac64.zip",
+        )
+
     def test_get_latest_linux(self) -> None:
         drvr, url, vers = edge.get_url("latest", _os="linux", _os_bit="64")
         latest_linux = self.get_latest_os(self.major, "LINUX")
@@ -160,6 +168,14 @@ class TestEdge(unittest.TestCase):
         self.assertEqual(
             url,
             f"https://msedgedriver.azureedge.net/{latest_linux}/edgedriver_linux64.zip",
+        )
+
+    def test_get_stable_linux(self) -> None:
+        drvr, url, vers = edge.get_url("stable", _os="linux", _os_bit="64")
+        self.assertEqual(vers, self.stable)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.stable}/edgedriver_linux64.zip",
         )
 
     def test_get_latest_windows(self) -> None:
@@ -171,17 +187,24 @@ class TestEdge(unittest.TestCase):
             f"https://msedgedriver.azureedge.net/{latest_win}/edgedriver_win64.zip",
         )
 
+    def test_get_stable_windows(self) -> None:
+        drvr, url, vers = edge.get_url("stable", _os="win", _os_bit="64")
+        self.assertEqual(vers, self.stable)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.stable}/edgedriver_win64.zip",
+        )
+
     def test_get_major(self) -> None:
         """only proves url is created, not that it's valid"""
-        drvr, url, vers = edge.get_url(f"{self.major}", _os="mac", _os_bit="64")
-        self.assertEqual(vers, f"{self.major}")
+        drvr, url, vers = edge.get_url(self.major, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.major)
         self.assertEqual(
             url,
             f"https://msedgedriver.azureedge.net/{self.major}/edgedriver_mac64.zip",
         )
 
     def test_get_build(self) -> None:
-        # self.edge_version(f"{self.latest}")
         url_latest = f"https://msedgedriver.azureedge.net/LATEST_RELEASE_{self.major}"
         self.latest = self.fetch(url_latest)
 
@@ -192,20 +215,12 @@ class TestEdge(unittest.TestCase):
         major_latest, minor_latest, patch_latest, build_latest = match_latest.groups()
         self.major_latest = major_latest
 
-        drvr, url, vers = edge.get_url(f"{self.latest}", _os="mac", _os_bit="64")
+        drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="64")
         self.assertEqual(vers, self.latest)
         self.assertEqual(
             url,
             f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64.zip",
         )
-
-    # not supported by https://msedgedriver.azureedge.net
-    # def test_get_nonsense(self) -> None:
-    #     with self.assertRaises(Exception) as exc:
-    #         self.edge_version("25.25.25.25")
-    #     self.assertEqual(str(exc.exception),
-    #                      "Unable to locate EdgeDriver version: 25.25.25.25!")
-    #     return
 
     def test_get_invalid_os(self) -> None:
         with self.assertRaises(OSError) as exc:
@@ -213,6 +228,14 @@ class TestEdge(unittest.TestCase):
         self.assertEqual(
             str(exc.exception), "There is no valid EdgeDriver release for lcars"
         )
+
+    def test_unresolved_version(self) -> None:
+        with self.assertRaises(Exception) as exc:
+            edge.get_url(None, _os="mac", _os_bit="64")  # type: ignore
+        self.assertEqual(
+            str(exc.exception), "Unable to locate EdgeDriver version: None!"
+        )
+        return
 
 
 if __name__ == "__main__":
