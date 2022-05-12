@@ -5,8 +5,12 @@ on:
     paths:
       - '**.py'
       - '**.yml'
+  pull_request:
   schedule:
   - cron:  '0 8 * * *'
+
+permissions:
+  contents: read
 
 jobs:
   run-tests:
