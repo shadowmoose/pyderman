@@ -112,7 +112,7 @@ class TestChrome(unittest.TestCase):
         with self.assertRaises(Exception) as exc:
             self.chrome_version("25.25.25.25")
         self.assertEqual(
-            str(exc.exception), "Unable to locate ChromeDriver version!: [25.25.25.25]"
+            str(exc.exception), "Unable to locate ChromeDriver version: 25.25.25.25!"
         )
         return
 
@@ -233,7 +233,7 @@ class TestEdge(unittest.TestCase):
         with self.assertRaises(Exception) as exc:
             edge.get_url(None, _os="mac", _os_bit="64")  # type: ignore[arg-type]
         self.assertEqual(
-            str(exc.exception), "Unable to locate EdgeDriver version!: [None]"
+            str(exc.exception), "Unable to locate EdgeDriver version: None!"
         )
         return
 
