@@ -60,7 +60,7 @@ def install(
     :return: The absolute path of the downloaded driver, or None if something failed.
     """
     if not _current_os:
-        raise Exception("Cannot determine OS version! [%s]" % platform.system())
+        raise Exception(f"Cannot determine OS version! [{platform.system()}]")
     if not version:
         version = "latest"
     if not browser:
@@ -75,26 +75,23 @@ def install(
         exts = [e for e in [".zip", ".tar.gz", ".tar.bz2"] if url.endswith(e)]
         if len(exts) != 1:
             raise Exception(
-                "Unable to locate file extension in URL: %s (%s)"
-                % (url, ",".join(exts))
+                f"Unable to locate file extension in URL: {url} ({','.join(exts)})"
             )
         archive = exts[0]
 
-        archive_path = join(
-            abspath(file_directory), "{}_{}{}".format(driver, ver, archive)
-        )
-        file_path = join(abspath(file_directory), "{}_{}{}".format(driver, ver, _ext))
+        archive_path = join(abspath(file_directory), f"{driver}_{ver}{archive}")
+        file_path = join(abspath(file_directory), f"{driver}_{ver}{_ext}")
         if filename:
             file_path = join(abspath(file_directory), filename)
 
         if not overwrite and isfile(file_path):
             if verbose:
-                print("%s is already installed." % driver)
+                print(f"{driver} is already installed.")
             return file_path
 
         if not _download(url, archive_path, verbose):
             if verbose:
-                print("Download for %s version failed; Trying alternates." % _os_bit)
+                print(f"Download for {_os_bit} version failed; Trying alternates.")
             continue
 
         out = _extract(archive_path, driver_path, file_path)
@@ -128,7 +125,7 @@ def _extract(path: str, driver_pattern: str, out_file: str) -> str | None:
     out_file = abspath(out_file)
     if not isfile(path):
         return None
-    tmp_path = join(dirname(out_file), "tmp_dl_dir_%s" % basename(path))
+    tmp_path = join(dirname(out_file), f"tmp_dl_dir_{basename(path)}")
     zip_ref: zipfile.ZipFile | tarfile.TarFile | None = None
     namelist: list[str] = []
     if path.endswith(".zip"):

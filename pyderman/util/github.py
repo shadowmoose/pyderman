@@ -12,10 +12,10 @@ def find_links(
         version = "latest"
     if version != "latest" and not version.startswith(prefix):
         version = "{}{}".format(prefix, version)
-    repo = "https://github.com/{}/{}/releases/{}".format(author, project, version)
+    repo = f"https://github.com/{author}/{project}/releases/{version}"
     html = downloader.raw(repo)
     if html is None:
-        raise Exception("Unable to download {} version: {}".format(project, version))
+        raise Exception(f"Unable to download {project} version: {version}")
     return [
         "https://github.com%s" % str(u)
         for u in re.findall(r"\"(.+?/download.+?)\"", html)

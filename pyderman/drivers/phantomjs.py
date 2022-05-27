@@ -30,7 +30,7 @@ def get_url(
                     release["links"]["self"]["href"],
                     str(ver.group(1)),
                 )
-    raise ValueError("Unable to get url")
+    raise ValueError("Unable to locate PhantomJSDriver version!: [{version}]")
 
 
 def _releases() -> Generator[dict[str, Any], None, None]:
@@ -38,7 +38,7 @@ def _releases() -> Generator[dict[str, Any], None, None]:
     while page:
         s = downloader.raw(page)
         if s is None:
-            raise ValueError("Unable to get page: %s" % page)
+            raise ValueError(f"Unable to get page: {page}")
         else:
             data = json.loads(s)
             for release in data["values"]:

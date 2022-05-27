@@ -231,7 +231,7 @@ class TestEdge(unittest.TestCase):
 
     def test_unresolved_version(self) -> None:
         with self.assertRaises(Exception) as exc:
-            edge.get_url(None, _os="mac", _os_bit="64")  # type: ignore
+            edge.get_url(None, _os="mac", _os_bit="64")  # type: ignore[arg-type]
         self.assertEqual(
             str(exc.exception), "Unable to locate EdgeDriver version: None!"
         )

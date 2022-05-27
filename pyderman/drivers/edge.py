@@ -6,7 +6,9 @@ from pyderman.util import downloader
 
 _stable = "https://msedgedriver.azureedge.net/LATEST_STABLE"
 _base_version = "https://msedgedriver.azureedge.net/LATEST_RELEASE"
-_base_download = "https://msedgedriver.azureedge.net/{}/edgedriver_{}{}.zip"
+_base_download = (
+    "https://msedgedriver.azureedge.net/{version}/edgedriver_{os}{os_bit}.zip"
+)
 
 
 def get_url(
@@ -20,7 +22,7 @@ def get_url(
     elif _os == "mac":
         _os_name = "MACOS"
     else:
-        raise OSError("There is no valid EdgeDriver release for {}".format(_os))
+        raise OSError(f"There is no valid EdgeDriver release for {_os}")
 
     if version in ("latest", "stable"):
         resolved_version = downloader.raw(_stable, "utf-16")
@@ -29,17 +31,17 @@ def get_url(
         if version == "latest":
             match = re.match(r"^(\d*)[.]?(\d*)[.]?(\d*)[.]?(\d*)$", resolved_version)
             if match:
-                major, minor, patch, build = match.groups()
-                _url = "{}_{}_{}".format(_base_version, major, _os_name)
+                major, _minor, _patch, _build = match.groups()
+                _url = f"{_base_version}_{major}_{_os_name}"
                 resolved_version = downloader.raw(_url, "utf-16")
                 resolved_version = resolved_version.strip() if resolved_version else ""
     else:
         resolved_version = version
 
-    url = _base_download.format(resolved_version, _os, _os_bit)
+    url = _base_download.format(version=resolved_version, os=_os, os_bit=_os_bit)
 
     if not resolved_version:
-        raise Exception("Unable to locate EdgeDriver version: {}!".format(version))
+        raise ValueError(f"Unable to locate EdgeDriver version! [{version}]")
     return "msedgedriver", url, resolved_version
 
 
