@@ -5,7 +5,7 @@ import re
 from pyderman.util import downloader
 
 _base_version = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
-_base_download = "https://chromedriver.storage.googleapis.com/%s/chromedriver_%s%s.zip"
+_base_download = "https://chromedriver.storage.googleapis.com/{version}/chromedriver_{os}{os_bit}.zip"
 
 
 def get_url(
@@ -15,20 +15,20 @@ def get_url(
     if version == "latest":
         resolved_version = downloader.raw(_base_version)
     elif match:
-        major, minor, patch, build = match.groups()
+        major, minor, patch, _build = match.groups()
         if patch:
-            patch_version = "{}.{}.{}".format(major, minor, patch)
+            patch_version = f"{major}.{minor}.{patch}"
         else:
             patch_version = major
-        resolved_version = downloader.raw("{}_{}".format(_base_version, patch_version))
+        resolved_version = downloader.raw(f"{_base_version}_{patch_version}")
     else:
         resolved_version = version
     if not resolved_version:
-        raise Exception("Unable to locate ChromeDriver version: {}!".format(version))
+        raise ValueError(f"Unable to locate ChromeDriver version! [{version}]")
     if _os == "mac-m1":
         _os = "mac"  # chromedriver_mac64_m1
         _os_bit = "%s_m1" % _os_bit
-    download = _base_download % (resolved_version, _os, _os_bit)
+    download = _base_download.format(version=resolved_version, os=_os, os_bit=_os_bit)
     return "chromedriver", download, resolved_version
 
 

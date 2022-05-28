@@ -10,14 +10,14 @@ def get_url(
 ) -> tuple[str, str, str]:
     urls = github.find_links("mozilla", "geckodriver", version)
     for u in urls:
-        target = "{}{}.".format(_os, _os_bit) if _os != "mac" else "macos."
+        target = f"{_os}{_os_bit}." if _os != "mac" else "macos."
         if _os == "mac-m1":
             target = "macos-aarch64."
         if target in u:
             ver = re.search(r"v(\d{1,2}\.\d{1,2}\.\d{1,2})", u)
             if ver is not None:
                 return "geckodriver", u, str(ver.group(1))
-    raise ValueError("Unable to get url")
+    raise ValueError(f"Unable to locate FirefoxDriver version! [{version}]")
 
 
 if __name__ == "__main__":
