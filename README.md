@@ -1,25 +1,9 @@
 # Pyderman (Selenium Web Driver Installer)
 
-[![Ubuntu](
-  https://github.com/shadowmoose/pyderman/workflows/Ubuntu/badge.svg
-  )](
-  https://github.com/shadowmoose/pyderman/actions?query=workflow%3AUbuntu
-) [![MacOS](
-  https://github.com/shadowmoose/pyderman/workflows/MacOS/badge.svg
-  )](
-  https://github.com/shadowmoose/pyderman/actions?query=workflow%3AMacOS
-) [![Windows](
-  https://github.com/shadowmoose/pyderman/workflows/Windows/badge.svg
-  )](
-  https://github.com/shadowmoose/pyderman/actions?query=workflow%3AWindows
-) [![MacOS (SUR)](
-  https://github.com/shadowmoose/pyderman/actions/workflows/test-macOS-sur.yml/badge.svg
-  )](
-  https://github.com/shadowmoose/pyderman/actions/workflows/test-macOS-sur.yml
-)
+[![Ubuntu](https://github.com/shadowmoose/pyderman/workflows/Ubuntu/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AUbuntu) [![MacOS](https://github.com/shadowmoose/pyderman/workflows/MacOS/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AMacOS) [![Windows](https://github.com/shadowmoose/pyderman/workflows/Windows/badge.svg)](https://github.com/shadowmoose/pyderman/actions?query=workflow%3AWindows) [![MacOS (SUR)](https://github.com/shadowmoose/pyderman/actions/workflows/test-macOS-sur.yml/badge.svg)](https://github.com/shadowmoose/pyderman/actions/workflows/test-macOS-sur.yml)
 
 This is a fast, simple, dependency-free package that can automatically find & download any version of
-the *Google Chrome (chromeDriver), Firefox (geckoDriver), PhantomJS, Opera (operaDriver), and Edge (edgeDriver)* web drivers.
+the _Google Chrome (chromeDriver), Firefox (geckoDriver), PhantomJS, Opera (operaDriver), and Edge (edgeDriver)_ web drivers.
 
 This project was built to allow developers to seamlessly include selenium support on the user-side, without requiring any manual configuration on their part. It will automatically locate the correct driver binary for the platform & version you choose, as well as setting the os-specific permissions after downloading.
 
@@ -40,22 +24,22 @@ After installed, call it in your code like so:
 ```python
 import pyderman as driver
 path = driver.install(browser=driver.firefox)
-print('Installed geckodriver driver to path: %s' % path)
+print(f"Installed geckodriver driver to path: {path}")
 ```
 
 There are options for the output directory, disabling printout, running chmod on the downloaded executable,
 automatic overwriting, executable file name, and version number.
 All parameters are optional, and the default values are listed below.
 
-This example downloads the Chrome Driver instead, by changing ```browser``` like so:
+This example downloads the Chrome Driver instead, by changing `browser` like so:
 
 ```python
 import pyderman as dr
 path = dr.install(browser=dr.chrome, file_directory='./lib/', verbose=True, chmod=True, overwrite=False, version=None, filename=None, return_info=False)
-print('Installed chromedriver to path: %s' % path)
+print(f"Installed chromedriver to path: {path}")
 ```
 
-The download is very fast, and will skip downloading if the file already exists. This behavior can be toggled with ```overwrite```.
+The download is very fast, and will skip downloading if the file already exists. This behavior can be toggled with `overwrite`.
 
 ## Notes
 
@@ -73,4 +57,4 @@ Apple broke a ton of compatibility moving to Big Sur, and now many of the web dr
 
 ## Why's it called 'Pyderman'?
 
-Because it installs *web*-drivers. [Get it?](https://youtu.be/4o29VoxtsFk)
+Because it installs _web_-drivers. [Get it?](https://youtu.be/4o29VoxtsFk)
