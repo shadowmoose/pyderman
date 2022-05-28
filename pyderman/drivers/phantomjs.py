@@ -30,7 +30,7 @@ def get_url(
                     release["links"]["self"]["href"],
                     str(ver.group(1)),
                 )
-    raise ValueError("Unable to locate PhantomJSDriver version!: [{version}]")
+    raise ValueError(f"Unable to locate PhantomJSDriver version! [{version}]")
 
 
 def _releases() -> Generator[dict[str, Any], None, None]:

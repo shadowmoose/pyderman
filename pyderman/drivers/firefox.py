@@ -17,7 +17,7 @@ def get_url(
             ver = re.search(r"v(\d{1,2}\.\d{1,2}\.\d{1,2})", u)
             if ver is not None:
                 return "geckodriver", u, str(ver.group(1))
-    raise ValueError("Unable to get url")
+    raise ValueError(f"Unable to locate FirefoxDriver version! [{version}]")
 
 
 if __name__ == "__main__":

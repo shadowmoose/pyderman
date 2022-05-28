@@ -16,7 +16,7 @@ def get_url(
             ver = re.search(r"v\.(\d{1,2}\.\d{1,2})", u)
             if ver is not None:
                 return "operadriver.*/operadriver", u, str(ver.group(1))
-    raise ValueError("Unable to locate OperaDriver version!: [{version}]")
+    raise ValueError(f"Unable to locate OperaDriver version! [{version}]")
 
 
 if __name__ == "__main__":
