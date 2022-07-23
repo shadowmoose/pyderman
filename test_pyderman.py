@@ -33,6 +33,7 @@ def process_driver(driver: ModuleType, self: TestDriverInstalls) -> None:
         )
     path = str(data.get("path"))
     output = subprocess.check_output([path, "--version"]).decode("utf-8")
+    print("Version:", output)
     self.assertIn(
         data["version"],
         output.lower(),
