@@ -14,7 +14,7 @@ def get_url(
         if _os == "mac-m1":
             target = "macos-aarch64."
         if target in u:
-            ver = re.search(r"v(\d{1,2}\.\d{1,2}\.\d{1,2})", u)
+            ver = re.search(r"v(\d+\.\d+\.\d+)", u)
             if ver is not None:
                 return "geckodriver", u, str(ver.group(1))
     raise ValueError(f"Unable to locate FirefoxDriver version! [{version}]")

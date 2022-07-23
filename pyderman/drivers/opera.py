@@ -13,7 +13,7 @@ def get_url(
     )
     for u in urls:
         if f"{_os}{_os_bit}" in u:
-            ver = re.search(r"v\.(\d{1,2}\.\d{1,2})", u)
+            ver = re.search(r"v\.(\d{1,3}\.\d{1,3})", u)
             if ver is not None:
                 return "operadriver.*/operadriver", u, str(ver.group(1))
     raise ValueError(f"Unable to locate OperaDriver version! [{version}]")
