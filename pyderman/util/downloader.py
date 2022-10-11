@@ -4,14 +4,7 @@ import shutil
 from os import makedirs
 from os.path import abspath, dirname, isdir
 from typing import Any
-
-try:
-    # Python 3
-    from urllib.request import urlopen
-except ImportError:
-    # Python 2
-    # noinspection PyUnresolvedReferences
-    from urllib2 import urlopen  # type: ignore[import,no-redef]
+from urllib.request import urlopen
 
 
 def _open(url: str) -> Any:
@@ -20,6 +13,13 @@ def _open(url: str) -> Any:
         return urlopen(url, timeout=15)
     except Exception:
         return None
+
+
+def get_redirect(url) -> str | None:
+    req = _open(url)
+    if not req:
+        return None
+    return req.geturl()
 
 
 def raw(url: str, encoding: str = "utf-8") -> str | None:
