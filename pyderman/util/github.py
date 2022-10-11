@@ -5,11 +5,11 @@ import re
 from pyderman.util import downloader
 
 
-def make_asset_url(author, project, version) -> str:
+def make_asset_url(author: str, project: str, version: str) -> str:
     return f"https://github.com/{author}/{project}/releases/expanded_assets/{version}"
 
 
-def make_releases_url(author, project, version) -> str:
+def make_releases_url(author: str, project: str, version: str) -> str:
     return f"https://github.com/{author}/{project}/releases/{version}"
 
 
@@ -19,9 +19,12 @@ def find_links(
     if not version:
         version = "latest"
     if version == "latest":
-        version = downloader.get_redirect(
+        redirect = downloader.get_redirect(
             make_releases_url(author, project, version)
-        ).split("/")[-1]
+        )
+        if not redirect:
+            raise Exception(f"Unable to locate latest version of {project}")
+        version = redirect.split("/")[-1]
     if not version.startswith(prefix):
         version = "{}{}".format(prefix, version)
     repo = make_asset_url(author, project, version)
