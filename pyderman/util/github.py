@@ -19,9 +19,7 @@ def find_links(
     if not version:
         version = "latest"
     if version == "latest":
-        redirect = downloader.get_redirect(
-            make_releases_url(author, project, version)
-        )
+        redirect = downloader.get_redirect(make_releases_url(author, project, version))
         if not redirect:
             raise Exception(f"Unable to locate latest version of {project}")
         version = redirect.split("/")[-1]

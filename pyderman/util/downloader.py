@@ -19,7 +19,7 @@ def get_redirect(url) -> str | None:
     req = _open(url)
     if not req:
         return None
-    return req.geturl()
+    return str(req.geturl())
 
 
 def raw(url: str, encoding: str = "utf-8") -> str | None:
