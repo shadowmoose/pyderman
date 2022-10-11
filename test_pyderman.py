@@ -4,8 +4,10 @@ import os
 import platform
 import re
 import subprocess
+import time
 import unittest
 from types import ModuleType
+
 
 try:
     # Python 3
@@ -140,18 +142,21 @@ class TestEdge(unittest.TestCase):
             self.major = major
         return
 
-    def get_latest_os(self, major: str, _os: str) -> str:
+    def get_latest_os(self, major: str, _os: str) -> set[str]:
         url = f"https://msedgedriver.azureedge.net/LATEST_RELEASE_{major}_{_os.upper()}"
-        return self.fetch(url)
+        opts = set()
+        for i in range(15):
+            # This endpoint occasionally returns an older cached value,
+            # so we have to fish for the cache to make testing more robust and cut down on false errors.
+            latest_mac = self.fetch(url)
+            opts.add(latest_mac)
+            time.sleep(0.25)
+        return opts
 
     def test_get_latest_mac(self) -> None:
         drvr, url, vers = edge.get_url("latest", _os="mac", _os_bit="64")
-        latest_mac = self.get_latest_os(self.major, "MACOS")
-        self.assertEqual(vers, latest_mac)
-        self.assertEqual(
-            url,
-            f"https://msedgedriver.azureedge.net/{latest_mac}/edgedriver_mac64.zip",
-        )
+        latest_macs = self.get_latest_os(self.major, "MACOS")
+        self.assertIn(vers, latest_macs)
 
     def test_get_stable_mac(self) -> None:
         drvr, url, vers = edge.get_url("stable", _os="mac", _os_bit="64")
@@ -164,11 +169,7 @@ class TestEdge(unittest.TestCase):
     def test_get_latest_linux(self) -> None:
         drvr, url, vers = edge.get_url("latest", _os="linux", _os_bit="64")
         latest_linux = self.get_latest_os(self.major, "LINUX")
-        self.assertEqual(vers, latest_linux)
-        self.assertEqual(
-            url,
-            f"https://msedgedriver.azureedge.net/{latest_linux}/edgedriver_linux64.zip",
-        )
+        self.assertIn(vers, latest_linux)
 
     def test_get_stable_linux(self) -> None:
         drvr, url, vers = edge.get_url("stable", _os="linux", _os_bit="64")
@@ -180,12 +181,8 @@ class TestEdge(unittest.TestCase):
 
     def test_get_latest_windows(self) -> None:
         drvr, url, vers = edge.get_url("latest", _os="win", _os_bit="64")
-        latest_win = self.get_latest_os(self.major, "WINDOWS")
-        self.assertEqual(vers, latest_win)
-        self.assertEqual(
-            url,
-            f"https://msedgedriver.azureedge.net/{latest_win}/edgedriver_win64.zip",
-        )
+        latest_wins = self.get_latest_os(self.major, "WINDOWS")
+        self.assertIn(vers, latest_wins)
 
     def test_get_stable_windows(self) -> None:
         drvr, url, vers = edge.get_url("stable", _os="win", _os_bit="64")
