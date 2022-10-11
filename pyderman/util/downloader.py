@@ -15,7 +15,7 @@ def _open(url: str) -> Any:
         return None
 
 
-def get_redirect(url) -> str | None:
+def get_redirect(url: str) -> str | None:
     req = _open(url)
     if not req:
         return None
