@@ -476,6 +476,14 @@ class TestFirefox(unittest.TestCase):
             str(exc.exception), f"Unable to download geckodriver version: v{version}"
         )
 
+    def test_get_url_unrecognized_os(self):
+        version = self.latest
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = firefox.get_url(version, _os="snoopy", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception), f"Unable to locate FirefoxDriver version! [{version}]"
+        )
+
 
 class TestOpera(unittest.TestCase):
     @classmethod
