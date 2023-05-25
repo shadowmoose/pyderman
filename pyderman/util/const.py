@@ -1,5 +1,4 @@
 MAC = "mac"
 MAC_ARM = "mac-arm"
-# MAC_ARM = "mac-m1"
 WIN = "win"
 LINUX = "linux"
