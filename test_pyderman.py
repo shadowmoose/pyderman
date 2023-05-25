@@ -107,7 +107,6 @@ class TestChrome(unittest.TestCase):
             url,
             f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_mac_arm64.zip",
         )
-        return
 
     def test_get_url_mac_m1(self):
         version = "105.0.5195.52"
@@ -117,7 +116,6 @@ class TestChrome(unittest.TestCase):
             url,
             f"https://chromedriver.storage.googleapis.com/{version}/chromedriver_mac64_m1.zip",
         )
-        return
 
     def test_get_url_mac_86(self):
         drvr, url, vers = chrome.get_url(self.latest, _os="mac", _os_bit="64")
@@ -126,7 +124,6 @@ class TestChrome(unittest.TestCase):
             url,
             f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_mac64.zip",
         )
-        return
 
     def test_get_url_win_32(self):
         drvr, url, vers = chrome.get_url(self.latest, _os="win", _os_bit="32")
@@ -135,7 +132,6 @@ class TestChrome(unittest.TestCase):
             url,
             f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_win32.zip",
         )
-        return
 
     def test_get_url_win_64(self):
         drvr, url, vers = chrome.get_url(self.latest, _os="win", _os_bit="64")
@@ -144,7 +140,6 @@ class TestChrome(unittest.TestCase):
             url,
             f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_win64.zip",
         )
-        return
 
     def test_get_url_linux_64(self):
         drvr, url, vers = chrome.get_url(self.latest, _os="linux", _os_bit="64")
@@ -153,7 +148,6 @@ class TestChrome(unittest.TestCase):
             url,
             f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_linux64.zip",
         )
-        return
 
     def test_get_url_linux_32(self):
         drvr, url, vers = chrome.get_url(self.latest, _os="linux", _os_bit="32")
@@ -162,7 +156,6 @@ class TestChrome(unittest.TestCase):
             url,
             f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_linux32.zip",
         )
-        return
 
     def test_get_url_unrecognized_version(self):
         version = "abd.xyz"
@@ -411,7 +404,6 @@ class TestFirefox(unittest.TestCase):
             f"https://github.com/mozilla/geckodriver/releases/download/"
             f"{self.latest}/geckodriver-{self.latest}-macos-aarch64.tar.gz",
         )
-        return
 
     def test_get_url_mac_m1(self):
         drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="64")
@@ -421,7 +413,6 @@ class TestFirefox(unittest.TestCase):
             f"https://github.com/mozilla/geckodriver/releases/download/"
             f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
         )
-        return
 
     def test_get_url_mac_32(self):
         drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="32")
@@ -431,7 +422,6 @@ class TestFirefox(unittest.TestCase):
             f"https://github.com/mozilla/geckodriver/releases/download/"
             f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
         )
-        return
 
     def test_get_url_mac_86(self):
         drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="64")
@@ -441,7 +431,6 @@ class TestFirefox(unittest.TestCase):
             f"https://github.com/mozilla/geckodriver/releases/download/"
             f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
         )
-        return
 
     def test_get_url_win_32(self):
         drvr, url, vers = firefox.get_url(self.latest, _os="win", _os_bit="32")
@@ -451,7 +440,6 @@ class TestFirefox(unittest.TestCase):
             f"https://github.com/mozilla/geckodriver/releases/download/"
             f"{self.latest}/geckodriver-{self.latest}-win32.zip",
         )
-        return
 
     def test_get_url_win_64(self):
         drvr, url, vers = firefox.get_url(self.latest, _os="win", _os_bit="64")
@@ -461,7 +449,6 @@ class TestFirefox(unittest.TestCase):
             f"https://github.com/mozilla/geckodriver/releases/download/"
             f"{self.latest}/geckodriver-{self.latest}-win64.zip",
         )
-        return
 
     def test_get_url_linux_64(self):
         drvr, url, vers = firefox.get_url(self.latest, _os="linux", _os_bit="64")
@@ -471,7 +458,6 @@ class TestFirefox(unittest.TestCase):
             f"https://github.com/mozilla/geckodriver/releases/download/"
             f"{self.latest}/geckodriver-{self.latest}-linux64.tar.gz",
         )
-        return
 
     def test_get_url_linux_32(self):
         drvr, url, vers = firefox.get_url(self.latest, _os="linux", _os_bit="32")
@@ -481,7 +467,6 @@ class TestFirefox(unittest.TestCase):
             f"https://github.com/mozilla/geckodriver/releases/download/"
             f"{self.latest}/geckodriver-{self.latest}-linux32.tar.gz",
         )
-        return
 
     def test_get_url_unrecognized_version(self):
         version = "abd.xyz"
@@ -512,7 +497,6 @@ class TestOpera(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.latest}/operadriver_mac64.zip",
         )
-        return
 
     def test_get_url_mac_32(self):
         with self.assertRaises(Exception) as exc:
@@ -520,8 +504,6 @@ class TestOpera(unittest.TestCase):
         self.assertEqual(
             str(exc.exception), f"Unable to locate OperaDriver version! [{self.latest}]"
         )
-
-        return
 
     def test_get_url_mac_86(self):
         drvr, url, vers = opera.get_url(self.latest, _os="mac", _os_bit="64")
@@ -531,7 +513,6 @@ class TestOpera(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.latest}/operadriver_mac64.zip",
         )
-        return
 
     def test_get_url_win_32(self):
         drvr, url, vers = opera.get_url(self.latest, _os="win", _os_bit="32")
@@ -541,7 +522,6 @@ class TestOpera(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.latest}/operadriver_win32.zip",
         )
-        return
 
     def test_get_url_win_64(self):
         drvr, url, vers = opera.get_url(self.latest, _os="win", _os_bit="64")
@@ -551,7 +531,6 @@ class TestOpera(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.latest}/operadriver_win64.zip",
         )
-        return
 
     def test_get_url_linux_64(self):
         drvr, url, vers = opera.get_url(self.latest, _os="linux", _os_bit="64")
@@ -561,7 +540,6 @@ class TestOpera(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.latest}/operadriver_linux64.zip",
         )
-        return
 
     def test_get_url_linux_32(self):
         with self.assertRaises(Exception) as exc:
@@ -569,7 +547,6 @@ class TestOpera(unittest.TestCase):
         self.assertEqual(
             str(exc.exception), f"Unable to locate OperaDriver version! [{self.latest}]"
         )
-        return
 
     def test_get_url_unrecognized_version(self):
         version = "abd.xyz"
@@ -604,8 +581,6 @@ class TestOperaPreChromium(unittest.TestCase):
             f"Unable to locate OperaDriver version! [{self.version}]",
         )
 
-        return
-
     def test_get_url_mac_86(self):
         drvr, url, vers = opera.get_url(self.version, _os="mac", _os_bit="64")
         self.assertEqual(vers, self.version[2:])
@@ -614,7 +589,6 @@ class TestOperaPreChromium(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.version}/operadriver_mac64.zip",
         )
-        return
 
     def test_get_url_win_32(self):
         drvr, url, vers = opera.get_url(self.version, _os="win", _os_bit="32")
@@ -624,7 +598,6 @@ class TestOperaPreChromium(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.version}/operadriver_win32.zip",
         )
-        return
 
     def test_get_url_win_64(self):
         drvr, url, vers = opera.get_url(self.version, _os="win", _os_bit="64")
@@ -634,7 +607,6 @@ class TestOperaPreChromium(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.version}/operadriver_win64.zip",
         )
-        return
 
     def test_get_url_linux_64(self):
         drvr, url, vers = opera.get_url(self.version, _os="linux", _os_bit="64")
@@ -644,7 +616,6 @@ class TestOperaPreChromium(unittest.TestCase):
             f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
             f"{self.version}/operadriver_linux64.zip",
         )
-        return
 
     def test_get_url_linux_32(self):
         with self.assertRaises(Exception) as exc:
@@ -653,7 +624,6 @@ class TestOperaPreChromium(unittest.TestCase):
             str(exc.exception),
             f"Unable to locate OperaDriver version! [{self.version}]",
         )
-        return
 
     def test_get_url_unrecognized_version(self):
         version = "abd.xyz"
