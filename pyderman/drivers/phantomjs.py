@@ -5,6 +5,7 @@ import re
 from typing import Any, Generator
 
 from pyderman.util import downloader
+from pyderman.util.const import LINUX, MAC_ARM
 
 
 def get_url(
@@ -16,7 +17,9 @@ def get_url(
     if not version or version == "latest":
         beta = False
         pattern = ""
-    if _os == "linux":
+    if _os == MAC_ARM:
+        _os = "mac"
+    if _os == LINUX:
         bit = "64" if _os_bit == "64" else "i686"
     for release in _releases():
         name = str(release["name"]).lower()

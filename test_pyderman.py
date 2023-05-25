@@ -101,7 +101,7 @@ class TestChrome(unittest.TestCase):
         )
 
     def test_get_url_mac_arm(self):
-        drvr, url, vers = chrome.get_url(self.latest, _os="mac-m1", _os_bit="64")
+        drvr, url, vers = chrome.get_url(self.latest, _os="mac-arm", _os_bit="64")
         self.assertEqual(vers, self.latest)
         self.assertEqual(
             url,
@@ -110,7 +110,7 @@ class TestChrome(unittest.TestCase):
 
     def test_get_url_mac_m1(self):
         version = "105.0.5195.52"
-        drvr, url, vers = chrome.get_url(version, _os="mac-m1", _os_bit="64")
+        drvr, url, vers = chrome.get_url(version, _os="mac-arm", _os_bit="64")
         self.assertEqual(vers, version)
         self.assertEqual(
             url,
@@ -306,7 +306,7 @@ class TestEdge(unittest.TestCase):
         return
 
     def test_get_url_mac_arm(self):
-        drvr, url, vers = edge.get_url(self.latest, _os="mac-m1", _os_bit="64")
+        drvr, url, vers = edge.get_url(self.latest, _os="mac-arm", _os_bit="64")
         self.assertEqual(vers, self.latest)
         self.assertEqual(
             url,
@@ -397,7 +397,7 @@ class TestFirefox(unittest.TestCase):
         return
 
     def test_get_url_mac_arm(self):
-        drvr, url, vers = firefox.get_url(self.latest, _os="mac-m1", _os_bit="64")
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac-arm", _os_bit="64")
         self.assertEqual(vers, self.latest[1:])
         self.assertEqual(
             url,
@@ -498,7 +498,7 @@ class TestOpera(unittest.TestCase):
         return
 
     def test_get_url_mac_arm(self):
-        drvr, url, vers = opera.get_url(self.latest, _os="mac-m1", _os_bit="64")
+        drvr, url, vers = opera.get_url(self.latest, _os="mac-arm", _os_bit="64")
         self.assertEqual(vers, self.latest[2:])
         self.assertEqual(
             url,
@@ -572,7 +572,7 @@ class TestOperaPreChromium(unittest.TestCase):
         return
 
     def test_get_url_mac_arm(self):
-        drvr, url, vers = opera.get_url(self.version, _os="mac-m1", _os_bit="64")
+        drvr, url, vers = opera.get_url(self.version, _os="mac-arm", _os_bit="64")
         self.assertEqual(vers, self.version[2:])
         self.assertEqual(
             url,

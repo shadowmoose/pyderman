@@ -4,7 +4,6 @@ import os
 import platform
 import re
 import shutil
-import subprocess
 import tarfile
 import zipfile
 from os.path import abspath, basename, dirname, isfile, join
@@ -13,9 +12,10 @@ from types import ModuleType
 from pyderman import drivers
 from pyderman.drivers import all_drivers, chrome, edge, firefox, opera, phantomjs
 from pyderman.util import downloader
+from pyderman.util.const import LINUX, MAC, MAC_ARM, WIN
 
 _versions = sorted(["32", "64"], key=lambda _v: not platform.machine().endswith(_v))
-_os_opts = [("win", "win", ".exe"), ("darwin", "mac", ""), ("linux", "linux", "")]
+_os_opts = [("win", WIN, ".exe"), ("darwin", MAC, ""), ("linux", LINUX, "")]
 
 _current_os = None
 _ext = ""
@@ -23,15 +23,10 @@ for _o in _os_opts:
     if _o[0] in platform.system().lower():
         _current_os = _o[1]
         _ext = _o[2]
-if (
-    _current_os == "mac"
-    and shutil.which("sysctl")
-    and subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"])
-    .decode("utf-8")
-    .lower()
-    .startswith("apple m1")
-):
-    _current_os = "mac-m1"
+
+if _current_os == MAC:
+    if platform.processor() == "arm":
+        _current_os = MAC_ARM
 
 
 def install(
