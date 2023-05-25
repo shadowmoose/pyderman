@@ -505,10 +505,12 @@ class TestOpera(unittest.TestCase):
         return
 
     def test_get_url_mac_arm(self):
-        with self.assertRaises(Exception) as exc:
-            drvr, url, vers = opera.get_url(self.latest, _os="mac-m1", _os_bit="64")
+        drvr, url, vers = opera.get_url(self.latest, _os="mac-m1", _os_bit="64")
+        self.assertEqual(vers, self.latest[2:])
         self.assertEqual(
-            str(exc.exception), f"Unable to locate OperaDriver version! [{self.latest}]"
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.latest}/operadriver_mac64.zip",
         )
         return
 
@@ -585,11 +587,12 @@ class TestOperaPreChromium(unittest.TestCase):
         return
 
     def test_get_url_mac_arm(self):
-        with self.assertRaises(Exception) as exc:
-            drvr, url, vers = opera.get_url(self.version, _os="mac-m1", _os_bit="64")
+        drvr, url, vers = opera.get_url(self.version, _os="mac-m1", _os_bit="64")
+        self.assertEqual(vers, self.version[2:])
         self.assertEqual(
-            str(exc.exception),
-            f"Unable to locate OperaDriver version! [{self.version}]",
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.version}/operadriver_mac64.zip",
         )
         return
 
