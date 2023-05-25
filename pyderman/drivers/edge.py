@@ -15,7 +15,6 @@ _base_download = (
 def get_url(
     version: str = "latest", _os: str | None = None, _os_bit: str | None = None
 ) -> tuple[str, str, str]:
-
     if _os == WIN:
         _os_name = "WINDOWS"
     elif _os == LINUX:
