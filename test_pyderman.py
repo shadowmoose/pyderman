@@ -211,12 +211,15 @@ class TestEdge(unittest.TestCase):
         if self.stable is None:
             self.stable = self.fetch(url)
 
-            match = self.version_re.match(self.stable)
-            if not match:
-                raise ValueError(f"Invalid version string: {self.stable!r}")
+        match = self.version_re.match(self.stable)
+        if not match:
+            raise ValueError(f"Invalid version string: {self.stable!r}")
 
-            major, minor, patch, build = match.groups()
-            self.major = major
+        major, minor, patch, build = match.groups()
+        self.major = major
+
+        url_latest = f"https://msedgedriver.azureedge.net/LATEST_RELEASE_{self.major}"
+        self.latest = self.fetch(url_latest)
         return
 
     def get_latest_os(self, major: str, _os: str) -> set[str]:
@@ -275,9 +278,6 @@ class TestEdge(unittest.TestCase):
         )
 
     def test_get_build(self) -> None:
-        url_latest = f"https://msedgedriver.azureedge.net/LATEST_RELEASE_{self.major}"
-        self.latest = self.fetch(url_latest)
-
         match_latest = self.version_re.match(self.latest)
         if not match_latest:
             raise ValueError(f"Invalid version string: {self.latest!r}")
@@ -306,6 +306,87 @@ class TestEdge(unittest.TestCase):
             str(exc.exception), "Unable to locate EdgeDriver version! [None]"
         )
         return
+
+    def test_get_url_mac_arm(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="mac-m1", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.stable}/edgedriver_mac64_m1.zip",
+        )
+        return
+
+    def test_get_url_mac_m1(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64.zip",
+        )
+        return
+
+    def test_get_url_mac_32(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="32")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac32.zip",
+        )
+        return
+
+    def test_get_url_mac_86(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64.zip",
+        )
+        return
+
+    def test_get_url_win_32(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="win", _os_bit="32")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_win32.zip",
+        )
+        return
+
+    def test_get_url_win_64(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="win", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_win64.zip",
+        )
+        return
+
+    def test_get_url_linux_64(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="linux", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_linux64.zip",
+        )
+        return
+
+    def test_get_url_linux_32(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="linux", _os_bit="32")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_linux32.zip",
+        )
+        return
+
+    def test_get_url_unrecognized_version(self):
+        version = "abd.xyz"
+        drvr, url, vers = edge.get_url(version, _os="linux", _os_bit="32")
+        self.assertEqual(vers, version)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{version}/edgedriver_linux32.zip",
+        )
 
 
 if __name__ == "__main__":
