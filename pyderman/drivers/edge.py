@@ -41,7 +41,7 @@ def get_url(
 
     if _os == MAC_ARM:
         _os = "mac"
-        _os_bit = "%s_m1" % _os_bit  # edgedriver_mac64_m1
+        _os_bit = f"{_os_bit}_m1"  # edgedriver_mac64_m1
 
     url = _base_download.format(version=resolved_version, os=_os, os_bit=_os_bit)
 

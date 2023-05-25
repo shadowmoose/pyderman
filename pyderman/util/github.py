@@ -24,12 +24,11 @@ def find_links(
             raise Exception(f"Unable to locate latest version of {project}")
         version = redirect.split("/")[-1]
     if not version.startswith(prefix):
-        version = "{}{}".format(prefix, version)
+        version = f"{prefix}{version}"
     repo = make_asset_url(author, project, version)
     html = downloader.raw(repo)
     if html is None:
         raise Exception(f"Unable to download {project} version: {version}")
     return [
-        "https://github.com%s" % str(u)
-        for u in re.findall(r"\"(.+?/download.+?)\"", html)
+        f"https://github.com{u}" for u in re.findall(r"\"(.+?/download.+?)\"", html)
     ]
