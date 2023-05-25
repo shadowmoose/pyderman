@@ -197,6 +197,7 @@ class TestChrome(unittest.TestCase):
 class TestEdge(unittest.TestCase):
     version_re = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)$")
     stable = None
+    major = None
 
     @staticmethod
     def fetch(url: str) -> str:
@@ -318,7 +319,6 @@ class TestEdge(unittest.TestCase):
             url,
             f"https://msedgedriver.azureedge.net/{self.stable}/edgedriver_mac64_m1.zip",
         )
-        return
 
     def test_get_url_mac_m1(self):
         drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="64")
@@ -327,7 +327,6 @@ class TestEdge(unittest.TestCase):
             url,
             f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64.zip",
         )
-        return
 
     def test_get_url_mac_32(self):
         drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="32")
@@ -336,7 +335,6 @@ class TestEdge(unittest.TestCase):
             url,
             f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac32.zip",
         )
-        return
 
     def test_get_url_mac_86(self):
         drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="64")
@@ -345,7 +343,6 @@ class TestEdge(unittest.TestCase):
             url,
             f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64.zip",
         )
-        return
 
     def test_get_url_win_32(self):
         drvr, url, vers = edge.get_url(self.latest, _os="win", _os_bit="32")
@@ -354,7 +351,6 @@ class TestEdge(unittest.TestCase):
             url,
             f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_win32.zip",
         )
-        return
 
     def test_get_url_win_64(self):
         drvr, url, vers = edge.get_url(self.latest, _os="win", _os_bit="64")
@@ -363,7 +359,6 @@ class TestEdge(unittest.TestCase):
             url,
             f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_win64.zip",
         )
-        return
 
     def test_get_url_linux_64(self):
         drvr, url, vers = edge.get_url(self.latest, _os="linux", _os_bit="64")
@@ -372,7 +367,6 @@ class TestEdge(unittest.TestCase):
             url,
             f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_linux64.zip",
         )
-        return
 
     def test_get_url_linux_32(self):
         drvr, url, vers = edge.get_url(self.latest, _os="linux", _os_bit="32")
@@ -381,7 +375,6 @@ class TestEdge(unittest.TestCase):
             url,
             f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_linux32.zip",
         )
-        return
 
     def test_get_url_unrecognized_version(self):
         version = "abd.xyz"
@@ -390,6 +383,115 @@ class TestEdge(unittest.TestCase):
         self.assertEqual(
             url,
             f"https://msedgedriver.azureedge.net/{version}/edgedriver_linux32.zip",
+        )
+
+
+class TestFirefox(unittest.TestCase):
+    version_re = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)$")
+    stable = None
+
+    @staticmethod
+    def fetch(url: str) -> str:
+        resp = urlopen(url, timeout=15)
+        html = resp.read().decode("utf-8", errors="ignore").strip()
+        return str(html)
+
+    @classmethod
+    def setUpClass(self) -> None:
+        page = urlopen(
+            "https://github.com/mozilla/geckodriver/releases/latest", timeout=15
+        )
+        redirect = page.geturl()
+        version_string = redirect.split("/")[-1]
+        self.latest = version_string
+        return
+
+    def test_get_url_mac_arm(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac-m1", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-macos-aarch64.tar.gz",
+        )
+        return
+
+    def test_get_url_mac_m1(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
+        )
+        return
+
+    def test_get_url_mac_32(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="32")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
+        )
+        return
+
+    def test_get_url_mac_86(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
+        )
+        return
+
+    def test_get_url_win_32(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="win", _os_bit="32")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-win32.zip",
+        )
+        return
+
+    def test_get_url_win_64(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="win", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-win64.zip",
+        )
+        return
+
+    def test_get_url_linux_64(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="linux", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-linux64.tar.gz",
+        )
+        return
+
+    def test_get_url_linux_32(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="linux", _os_bit="32")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-linux32.tar.gz",
+        )
+        return
+
+    def test_get_url_unrecognized_version(self):
+        version = "abd.xyz"
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = firefox.get_url(version, _os="linux", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception), f"Unable to download geckodriver version: v{version}"
         )
 
 
