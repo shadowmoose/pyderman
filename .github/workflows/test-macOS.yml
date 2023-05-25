@@ -16,7 +16,7 @@ permissions:
 jobs:
   run-tests:
     name: Python ${{ matrix.python-version }}
-    runs-on: macOS-10.15
+    runs-on: macOS-latest
     strategy:
       max-parallel: 9
       fail-fast: false
