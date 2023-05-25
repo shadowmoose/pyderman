@@ -310,7 +310,7 @@ class TestEdge(unittest.TestCase):
         self.assertEqual(vers, self.latest)
         self.assertEqual(
             url,
-            f"https://msedgedriver.azureedge.net/{self.stable}/edgedriver_mac64_m1.zip",
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64_m1.zip",
         )
 
     def test_get_url_mac_m1(self):
