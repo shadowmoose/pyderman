@@ -70,7 +70,10 @@ class TestDriverInstalls(unittest.TestCase):
 
 
 class TestChrome(unittest.TestCase):
-    def setUp(self) -> None:
+    latest = None
+
+    @classmethod
+    def setUpClass(self) -> None:
         version_re = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)$")
         url = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
         resp = urlopen(url, timeout=15)
@@ -206,7 +209,8 @@ class TestEdge(unittest.TestCase):
         """Shorten the given version, dropping the trailing build ID to prevent artifact caching errors."""
         return ".".join(ver1.split(".")[:-1])
 
-    def setUp(self) -> None:
+    @classmethod
+    def setUpClass(self) -> None:
         url = "https://msedgedriver.azureedge.net/LATEST_STABLE"
         if self.stable is None:
             self.stable = self.fetch(url)
