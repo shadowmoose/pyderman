@@ -8,7 +8,6 @@ import time
 import unittest
 from types import ModuleType
 
-
 try:
     # Python 3
     from urllib.request import urlopen
@@ -71,7 +70,10 @@ class TestDriverInstalls(unittest.TestCase):
 
 
 class TestChrome(unittest.TestCase):
-    def setUp(self) -> None:
+    latest = None
+
+    @classmethod
+    def setUpClass(self) -> None:
         version_re = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)$")
         url = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
         resp = urlopen(url, timeout=15)
@@ -98,6 +100,72 @@ class TestChrome(unittest.TestCase):
             f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_mac64.zip",
         )
 
+    def test_get_url_mac_arm(self):
+        drvr, url, vers = chrome.get_url(self.latest, _os="mac-arm", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_mac_arm64.zip",
+        )
+
+    def test_get_url_mac_m1(self):
+        version = "105.0.5195.52"
+        drvr, url, vers = chrome.get_url(version, _os="mac-arm", _os_bit="64")
+        self.assertEqual(vers, version)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{version}/chromedriver_mac64_m1.zip",
+        )
+
+    def test_get_url_mac_86(self):
+        drvr, url, vers = chrome.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_mac64.zip",
+        )
+
+    def test_get_url_win_32(self):
+        drvr, url, vers = chrome.get_url(self.latest, _os="win", _os_bit="32")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_win32.zip",
+        )
+
+    def test_get_url_win_64(self):
+        drvr, url, vers = chrome.get_url(self.latest, _os="win", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_win64.zip",
+        )
+
+    def test_get_url_linux_64(self):
+        drvr, url, vers = chrome.get_url(self.latest, _os="linux", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_linux64.zip",
+        )
+
+    def test_get_url_linux_32(self):
+        drvr, url, vers = chrome.get_url(self.latest, _os="linux", _os_bit="32")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{self.latest}/chromedriver_linux32.zip",
+        )
+
+    def test_get_url_unrecognized_version(self):
+        version = "abd.xyz"
+        drvr, url, vers = chrome.get_url(version, _os="linux", _os_bit="32")
+        self.assertEqual(vers, version)
+        self.assertEqual(
+            url,
+            f"https://chromedriver.storage.googleapis.com/{version}/chromedriver_linux32.zip",
+        )
+
     def test_get_latest(self) -> None:
         self.chrome_version("latest")
 
@@ -122,6 +190,7 @@ class TestChrome(unittest.TestCase):
 class TestEdge(unittest.TestCase):
     version_re = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)$")
     stable = None
+    major = None
 
     @staticmethod
     def fetch(url: str) -> str:
@@ -131,20 +200,24 @@ class TestEdge(unittest.TestCase):
 
     @staticmethod
     def looseVer(ver1):
-        """ Shorten the given version, dropping the trailing build ID to prevent artifact caching errors. """
-        return '.'.join(ver1.split('.')[:-1])
+        """Shorten the given version, dropping the trailing build ID to prevent artifact caching errors."""
+        return ".".join(ver1.split(".")[:-1])
 
-    def setUp(self) -> None:
+    @classmethod
+    def setUpClass(self) -> None:
         url = "https://msedgedriver.azureedge.net/LATEST_STABLE"
         if self.stable is None:
             self.stable = self.fetch(url)
 
-            match = self.version_re.match(self.stable)
-            if not match:
-                raise ValueError(f"Invalid version string: {self.stable!r}")
+        match = self.version_re.match(self.stable)
+        if not match:
+            raise ValueError(f"Invalid version string: {self.stable!r}")
 
-            major, minor, patch, build = match.groups()
-            self.major = major
+        major, minor, patch, build = match.groups()
+        self.major = major
+
+        url_latest = f"https://msedgedriver.azureedge.net/LATEST_RELEASE_{self.major}"
+        self.latest = self.fetch(url_latest)
         return
 
     def get_latest_os(self, major: str, _os: str) -> set[str]:
@@ -167,7 +240,7 @@ class TestEdge(unittest.TestCase):
         drvr, url, vers = edge.get_url("stable", _os="mac", _os_bit="64")
         self.assertEqual(vers, self.stable)
         self.assertEqual(self.looseVer(vers), self.looseVer(self.stable))
-        self.assertTrue('edgedriver_mac64' in url, 'The returned mac URL is not valid!')
+        self.assertTrue("edgedriver_mac64" in url, "The returned mac URL is not valid!")
 
     def test_get_latest_linux(self) -> None:
         drvr, url, vers = edge.get_url("latest", _os="linux", _os_bit="64")
@@ -177,7 +250,9 @@ class TestEdge(unittest.TestCase):
     def test_get_stable_linux(self) -> None:
         drvr, url, vers = edge.get_url("stable", _os="linux", _os_bit="64")
         self.assertEqual(self.looseVer(vers), self.looseVer(self.stable))
-        self.assertTrue('edgedriver_linux64' in url, 'The returned linux URL is not valid!')
+        self.assertTrue(
+            "edgedriver_linux64" in url, "The returned linux URL is not valid!"
+        )
 
     def test_get_latest_windows(self) -> None:
         drvr, url, vers = edge.get_url("latest", _os="win", _os_bit="64")
@@ -187,7 +262,9 @@ class TestEdge(unittest.TestCase):
     def test_get_stable_windows(self) -> None:
         drvr, url, vers = edge.get_url("stable", _os="win", _os_bit="64")
         self.assertEqual(self.looseVer(vers), self.looseVer(self.stable))
-        self.assertTrue('edgedriver_win64' in url, 'The returned windows URL is not valid!')
+        self.assertTrue(
+            "edgedriver_win64" in url, "The returned windows URL is not valid!"
+        )
 
     def test_get_major(self) -> None:
         """only proves url is created, not that it's valid"""
@@ -199,9 +276,6 @@ class TestEdge(unittest.TestCase):
         )
 
     def test_get_build(self) -> None:
-        url_latest = f"https://msedgedriver.azureedge.net/LATEST_RELEASE_{self.major}"
-        self.latest = self.fetch(url_latest)
-
         match_latest = self.version_re.match(self.latest)
         if not match_latest:
             raise ValueError(f"Invalid version string: {self.latest!r}")
@@ -230,6 +304,342 @@ class TestEdge(unittest.TestCase):
             str(exc.exception), "Unable to locate EdgeDriver version! [None]"
         )
         return
+
+    def test_get_url_mac_arm(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="mac-arm", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64_m1.zip",
+        )
+
+    def test_get_url_mac_m1(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64.zip",
+        )
+
+    def test_get_url_mac_32(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="32")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac32.zip",
+        )
+
+    def test_get_url_mac_86(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_mac64.zip",
+        )
+
+    def test_get_url_win_32(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="win", _os_bit="32")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_win32.zip",
+        )
+
+    def test_get_url_win_64(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="win", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_win64.zip",
+        )
+
+    def test_get_url_linux_64(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="linux", _os_bit="64")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_linux64.zip",
+        )
+
+    def test_get_url_linux_32(self):
+        drvr, url, vers = edge.get_url(self.latest, _os="linux", _os_bit="32")
+        self.assertEqual(vers, self.latest)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{self.latest}/edgedriver_linux32.zip",
+        )
+
+    def test_get_url_unrecognized_version(self):
+        version = "abd.xyz"
+        drvr, url, vers = edge.get_url(version, _os="linux", _os_bit="32")
+        self.assertEqual(vers, version)
+        self.assertEqual(
+            url,
+            f"https://msedgedriver.azureedge.net/{version}/edgedriver_linux32.zip",
+        )
+
+
+class TestFirefox(unittest.TestCase):
+    @staticmethod
+    def fetch(url: str) -> str:
+        resp = urlopen(url, timeout=15)
+        html = resp.read().decode("utf-8", errors="ignore").strip()
+        return str(html)
+
+    @classmethod
+    def setUpClass(self) -> None:
+        page = urlopen(
+            "https://github.com/mozilla/geckodriver/releases/latest", timeout=15
+        )
+        redirect = page.geturl()
+        version_string = redirect.split("/")[-1]
+        self.latest = version_string
+        return
+
+    def test_get_url_mac_arm(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac-arm", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-macos-aarch64.tar.gz",
+        )
+
+    def test_get_url_mac_m1(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
+        )
+
+    def test_get_url_mac_32(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="32")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
+        )
+
+    def test_get_url_mac_86(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-macos.tar.gz",
+        )
+
+    def test_get_url_win_32(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="win", _os_bit="32")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-win32.zip",
+        )
+
+    def test_get_url_win_64(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="win", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-win64.zip",
+        )
+
+    def test_get_url_linux_64(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="linux", _os_bit="64")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-linux64.tar.gz",
+        )
+
+    def test_get_url_linux_32(self):
+        drvr, url, vers = firefox.get_url(self.latest, _os="linux", _os_bit="32")
+        self.assertEqual(vers, self.latest[1:])
+        self.assertEqual(
+            url,
+            f"https://github.com/mozilla/geckodriver/releases/download/"
+            f"{self.latest}/geckodriver-{self.latest}-linux32.tar.gz",
+        )
+
+    def test_get_url_unrecognized_version(self):
+        version = "abd.xyz"
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = firefox.get_url(version, _os="linux", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception), f"Unable to download geckodriver version: v{version}"
+        )
+
+    def test_get_url_unrecognized_os(self):
+        version = self.latest
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = firefox.get_url(version, _os="snoopy", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception), f"Unable to locate FirefoxDriver version! [{version}]"
+        )
+
+
+class TestOpera(unittest.TestCase):
+    @classmethod
+    def setUpClass(self) -> None:
+        page = urlopen(
+            "https://github.com/operasoftware/operachromiumdriver/releases/latest",
+            timeout=15,
+        )
+        redirect = page.geturl()
+        version_string = redirect.split("/")[-1]
+        self.latest = version_string
+        return
+
+    def test_get_url_mac_arm(self):
+        drvr, url, vers = opera.get_url(self.latest, _os="mac-arm", _os_bit="64")
+        self.assertEqual(vers, self.latest[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.latest}/operadriver_mac64.zip",
+        )
+
+    def test_get_url_mac_32(self):
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = opera.get_url(self.latest, _os="mac", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception), f"Unable to locate OperaDriver version! [{self.latest}]"
+        )
+
+    def test_get_url_mac_86(self):
+        drvr, url, vers = opera.get_url(self.latest, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.latest[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.latest}/operadriver_mac64.zip",
+        )
+
+    def test_get_url_win_32(self):
+        drvr, url, vers = opera.get_url(self.latest, _os="win", _os_bit="32")
+        self.assertEqual(vers, self.latest[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.latest}/operadriver_win32.zip",
+        )
+
+    def test_get_url_win_64(self):
+        drvr, url, vers = opera.get_url(self.latest, _os="win", _os_bit="64")
+        self.assertEqual(vers, self.latest[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.latest}/operadriver_win64.zip",
+        )
+
+    def test_get_url_linux_64(self):
+        drvr, url, vers = opera.get_url(self.latest, _os="linux", _os_bit="64")
+        self.assertEqual(vers, self.latest[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.latest}/operadriver_linux64.zip",
+        )
+
+    def test_get_url_linux_32(self):
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = opera.get_url(self.latest, _os="linux", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception), f"Unable to locate OperaDriver version! [{self.latest}]"
+        )
+
+    def test_get_url_unrecognized_version(self):
+        version = "abd.xyz"
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = firefox.get_url(version, _os="linux", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception), f"Unable to download geckodriver version: v{version}"
+        )
+
+
+class TestOperaPreChromium(unittest.TestCase):
+    @classmethod
+    def setUpClass(self) -> None:
+        self.version = "v.2.45"
+        return
+
+    def test_get_url_mac_arm(self):
+        drvr, url, vers = opera.get_url(self.version, _os="mac-arm", _os_bit="64")
+        self.assertEqual(vers, self.version[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.version}/operadriver_mac64.zip",
+        )
+        return
+
+    def test_get_url_mac_32(self):
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = opera.get_url(self.version, _os="mac", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception),
+            f"Unable to locate OperaDriver version! [{self.version}]",
+        )
+
+    def test_get_url_mac_86(self):
+        drvr, url, vers = opera.get_url(self.version, _os="mac", _os_bit="64")
+        self.assertEqual(vers, self.version[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.version}/operadriver_mac64.zip",
+        )
+
+    def test_get_url_win_32(self):
+        drvr, url, vers = opera.get_url(self.version, _os="win", _os_bit="32")
+        self.assertEqual(vers, self.version[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.version}/operadriver_win32.zip",
+        )
+
+    def test_get_url_win_64(self):
+        drvr, url, vers = opera.get_url(self.version, _os="win", _os_bit="64")
+        self.assertEqual(vers, self.version[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.version}/operadriver_win64.zip",
+        )
+
+    def test_get_url_linux_64(self):
+        drvr, url, vers = opera.get_url(self.version, _os="linux", _os_bit="64")
+        self.assertEqual(vers, self.version[2:])
+        self.assertEqual(
+            url,
+            f"https://github.com/operasoftware/operachromiumdriver/releases/download/"
+            f"{self.version}/operadriver_linux64.zip",
+        )
+
+    def test_get_url_linux_32(self):
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = opera.get_url(self.version, _os="linux", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception),
+            f"Unable to locate OperaDriver version! [{self.version}]",
+        )
+
+    def test_get_url_unrecognized_version(self):
+        version = "abd.xyz"
+        with self.assertRaises(Exception) as exc:
+            drvr, url, vers = firefox.get_url(version, _os="linux", _os_bit="32")
+        self.assertEqual(
+            str(exc.exception), f"Unable to download geckodriver version: v{version}"
+        )
 
 
 if __name__ == "__main__":

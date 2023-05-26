@@ -3,16 +3,21 @@ from __future__ import annotations
 import re
 
 from pyderman.util import github
+from pyderman.util.const import MAC, MAC_ARM
 
 
 def get_url(
     version: str = "latest", _os: str | None = None, _os_bit: str | None = None
 ) -> tuple[str, str, str]:
     urls = github.find_links("mozilla", "geckodriver", version)
+    if _os == MAC_ARM:
+        target = "macos-aarch64."
+    elif _os == MAC:
+        target = "macos."
+    else:
+        target = f"{_os}{_os_bit}."
+
     for u in urls:
-        target = f"{_os}{_os_bit}." if _os != "mac" else "macos."
-        if _os == "mac-m1":
-            target = "macos-aarch64."
         if target in u:
             ver = re.search(r"v(\d+\.\d+\.\d+)", u)
             if ver is not None:

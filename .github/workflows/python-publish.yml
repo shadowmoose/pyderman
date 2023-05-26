@@ -24,7 +24,7 @@ jobs:
         python-version: '3.x'
 
     - name: Inject release tag version
-      run: sed -i "s/INJECTED_PYDERMAN_VERSION/${{ github.event.release.tag_name }}/" setup.cfg
+      run: sed -i "s/0.0.0/${{ github.event.release.tag_name }}/" setup.cfg
 
     - name: Install dependencies
       run: |

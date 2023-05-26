@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 
 from pyderman.util import downloader
+from pyderman.util.const import LINUX, MAC, MAC_ARM, WIN
 
 _stable = "https://msedgedriver.azureedge.net/LATEST_STABLE"
 _base_version = "https://msedgedriver.azureedge.net/LATEST_RELEASE"
@@ -14,12 +15,11 @@ _base_download = (
 def get_url(
     version: str = "latest", _os: str | None = None, _os_bit: str | None = None
 ) -> tuple[str, str, str]:
-
-    if _os == "win":
+    if _os == WIN:
         _os_name = "WINDOWS"
-    elif _os == "linux":
+    elif _os == LINUX:
         _os_name = "LINUX"
-    elif _os == "mac":
+    elif _os in [MAC, MAC_ARM]:
         _os_name = "MACOS"
     else:
         raise OSError(f"There is no valid EdgeDriver release for {_os}")
@@ -37,6 +37,10 @@ def get_url(
                 resolved_version = resolved_version.strip() if resolved_version else ""
     else:
         resolved_version = version
+
+    if _os == MAC_ARM:
+        _os = "mac"
+        _os_bit = f"{_os_bit}_m1"  # edgedriver_mac64_m1
 
     url = _base_download.format(version=resolved_version, os=_os, os_bit=_os_bit)
 
